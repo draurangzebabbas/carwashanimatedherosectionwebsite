@@ -15,6 +15,7 @@ function getFramePath(index: number): string {
 
 export default function CarWashScroll() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const frameIndexRef = useRef<number>(0);
   const rafRef = useRef<number | null>(null);
@@ -53,7 +54,7 @@ export default function CarWashScroll() {
     if (!canvas) return;
     const dpr = window.devicePixelRatio || 1;
     canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+    canvas.height = (window.innerHeight - 68) * dpr;
     // Re-draw current frame after resize
     drawFrame(frameIndexRef.current);
   }, [drawFrame]);
@@ -115,16 +116,33 @@ export default function CarWashScroll() {
   useEffect(() => {
     if (!allLoaded) return;
 
-    // Draw frame 0 immediately
     needsDrawRef.current = true;
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(1, Math.max(0, maxScroll > 0 ? scrollY / maxScroll : 0));
-      scrollProgressRef.current = progress;
+      const container = containerRef.current;
+      if (!container) return;
 
-      const frameIndex = Math.min(TOTAL_FRAMES - 1, Math.floor(progress * (TOTAL_FRAMES - 1)));
+      // Get the bounding rect fresh on every scroll
+      const rect = container.getBoundingClientRect();
+
+      // The canvas is sticky at top:68px (navbar height)
+      // Frame 0 should show when the TOP of the container hits top:68px
+      // That means rect.top === 68 → progress = 0
+      // Frame 239 should show when the BOTTOM of the container hits the bottom of the viewport
+      // That means rect.bottom === window.innerHeight → progress = 1
+
+      const navbarHeight = 68;
+      const visibleCanvasHeight = window.innerHeight - navbarHeight;
+      const totalDistance = container.offsetHeight - visibleCanvasHeight;
+
+      // Start pinning when the top of the container reaches the navbar (68px from top)
+      const scrolled = navbarHeight - rect.top;
+      const progress = Math.min(1, Math.max(0, totalDistance > 0 ? scrolled / totalDistance : 0));
+
+      const frameIndex = Math.min(
+        TOTAL_FRAMES - 1,
+        Math.floor(progress * (TOTAL_FRAMES - 1))
+      );
 
       if (frameIndex !== frameIndexRef.current) {
         frameIndexRef.current = frameIndex;
@@ -132,6 +150,7 @@ export default function CarWashScroll() {
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [allLoaded]);
@@ -197,10 +216,11 @@ export default function CarWashScroll() {
 
       {/* ── Scroll container ──────────────────────────────────────────────── */}
       <div
+        ref={containerRef}
         style={{
-          height: '2400px',
+          height: `${TOTAL_FRAMES * 20}px`,
           position: 'relative',
-          backgroundColor: '#E8E8E8',
+          backgroundColor: '#E0DEDD',
           visibility: allLoaded ? 'visible' : 'hidden',
         }}
       >
@@ -209,11 +229,11 @@ export default function CarWashScroll() {
           ref={canvasRef}
           style={{
             position: 'sticky',
-            top: 0,
+            top: '68px',
             width: '100vw',
-            height: '100vh',
+            height: 'calc(100vh - 68px)',
             display: 'block',
-            backgroundColor: '#E8E8E8',
+            backgroundColor: '#E0DEDD',
           }}
         />
 
