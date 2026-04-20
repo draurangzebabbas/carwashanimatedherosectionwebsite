@@ -17,5 +17,6 @@ html, body {
   background-color: #E0DEDD;
   font-family: 'Inter', system-ui, sans-serif;
   color: #1A1A1A;
+  scroll-behavior: smooth;
 }
 

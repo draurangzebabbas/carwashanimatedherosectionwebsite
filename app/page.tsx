@@ -25,21 +25,30 @@ export default function Page() {
 
       {/* A. FIXED NAVBAR */}
       <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-        height: '68px', display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between', padding: '0 48px',
-        backgroundColor: 'rgba(224,222,221,0.88)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid rgba(0,0,0,0.07)'
+        position: 'fixed', top: 0, left: 0, right: 0,
+        zIndex: 1000, height: '67px', width: '100%',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 48px',
+        backgroundColor: 'rgba(255, 255, 255, 0.45)',
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        borderRadius: '0 0 24px 24px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#1A1A1A' }}>SPARKLE</span>
           <span style={{ color: '#C8A96E', fontSize: '8px', marginLeft: '2px' }}>●</span>
         </div>
-        
+
         <div className="nav-links" style={{ display: 'flex', gap: '36px' }}>
-          {['Services', 'How It Works', 'Pricing', 'Contact'].map(text => (
-            <HoverLink key={text} text={text} />
+          {[
+            { text: 'Packages', href: '#packages' },
+            { text: 'The Process', href: '#process' },
+            { text: 'About us', href: '#about' },
+            { text: 'Contact', href: '#footer' }
+          ].map(item => (
+            <HoverLink key={item.text} text={item.text} href={item.href} />
           ))}
         </div>
 
@@ -47,10 +56,10 @@ export default function Page() {
       </nav>
 
       {/* B. HERO SECTION INTRO */}
-      <div style={{ 
+      <div style={{
         position: 'relative',
         zIndex: 20,
-        height: '100vh', 
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -82,9 +91,23 @@ export default function Page() {
           zIndex: 1
         }} />
 
-        {/* RAIL TRACKS */}
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '24px', background: 'linear-gradient(to right, #444, #222, #333)', zIndex: 10, borderRight: '1px solid rgba(255,255,255,0.05)' }} />
-        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '24px', background: 'linear-gradient(to left, #444, #222, #333)', zIndex: 10, borderLeft: '1px solid rgba(255,255,255,0.05)' }} />
+        {/* STRUCTURAL VERTICAL RAILS (With Groove Detail) */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '28px',
+          background: `
+            linear-gradient(to right, #000, #222 30%, #111 50%, #222 70%, #000),
+            repeating-linear-gradient(90deg, transparent 0px, transparent 4px, rgba(255,255,255,0.02) 5px)
+          `,
+          zIndex: 15, borderRight: '1px solid #333'
+        }} />
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: '28px',
+          background: `
+            linear-gradient(to left, #000, #222 30%, #111 50%, #222 70%, #000),
+            repeating-linear-gradient(90deg, transparent 0px, transparent 4px, rgba(255,255,255,0.02) 5px)
+          `,
+          zIndex: 15, borderLeft: '1px solid #333'
+        }} />
 
         {/* MASTER SHUTTER PROJECTION (Ties text and background together) */}
         <div style={{
@@ -108,38 +131,38 @@ export default function Page() {
         }} />
 
         <div style={{ position: 'relative', zIndex: 5 }}>
-          <h1 style={{ 
-            fontFamily: 'Inter', 
-            fontWeight: 900, 
-            fontSize: 'clamp(3rem, 8vw, 5.5rem)', 
-            margin: 0, 
-            letterSpacing: '-0.02em', 
+          <h1 style={{
+            fontFamily: 'Inter',
+            fontWeight: 900,
+            fontSize: 'clamp(3rem, 8vw, 5.5rem)',
+            margin: 0,
+            letterSpacing: '-0.02em',
             lineHeight: 0.95,
             textTransform: 'uppercase',
-            color: '#1A1A1A', 
+            color: '#1A1A1A',
             textAlign: 'center',
             opacity: 0.98,
             filter: 'drop-shadow(0px 1px 0px rgba(255,255,255,0.4))',
             paddingBottom: '20px'
           }}>
-            Premium Care for <br/>
-            <span style={{ 
+            Premium Care for <br />
+            <span style={{
               display: 'block',
               marginTop: '12px',
               color: '#B8975D',
             }}>Your Vehicle</span>
           </h1>
 
-          <p style={{ 
-            fontFamily: 'Inter', 
-            fontSize: '1.05rem', 
-            marginTop: '32px', 
-            maxWidth: '620px', 
+          <p style={{
+            fontFamily: 'Inter',
+            fontSize: '1.05rem',
+            marginTop: '32px',
+            maxWidth: '620px',
             margin: '32px auto 0',
             fontWeight: 700,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: '#444444', 
+            color: '#444444',
             opacity: 0.8
           }}>
             Scroll down to experience our interactive wash process from start to finish.
@@ -155,8 +178,8 @@ export default function Page() {
       </div>
 
 
-      {/* C. STATS BAR */}
-      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', padding: '56px 48px' }}>
+      {/* C. STATS BAR (Used as About target) */}
+      <div id="about" style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', padding: '56px 48px' }}>
         <div className="stats-grid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap' }}>
           <StatBox number="2,400+" label="Happy Customers" />
           <div className="stats-divider" style={{ width: '1px', height: '44px', background: 'rgba(255,255,255,0.1)' }} />
@@ -168,11 +191,11 @@ export default function Page() {
         </div>
       </div>
 
-      {/* D. SERVICES SECTION */}
-      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '120px 48px' }}>
+      {/* D. SERVICES SECTION (PACKAGES) */}
+      <div id="packages" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '120px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-            OUR SERVICES
+            OUR PACKAGES
           </div>
           <div style={{ marginBottom: '16px', fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A' }}>
             Choose Your Package
@@ -182,24 +205,24 @@ export default function Page() {
           </div>
 
           <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-            <ServiceCard 
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4C18 4 8 16 8 22a10 10 0 0020 0C28 16 18 4 18 4z" fill="#C8A96E"/></svg>}
+            <ServiceCard
+              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4C18 4 8 16 8 22a10 10 0 0020 0C28 16 18 4 18 4z" fill="#C8A96E" /></svg>}
               title="Basic Wash"
               price="Rs 500"
               features={['Exterior rinse', 'Soap wash', 'Wheel clean', 'Hand dry']}
               buttonStyle="outline"
               popular={false}
             />
-            <ServiceCard 
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4l2.5 9.5H30l-8 5.8 3 9.7-7-5.1-7 5.1 3-9.7-8-5.8h9.5z" fill="#C8A96E"/></svg>}
+            <ServiceCard
+              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4l2.5 9.5H30l-8 5.8 3 9.7-7-5.1-7 5.1 3-9.7-8-5.8h9.5z" fill="#C8A96E" /></svg>}
               title="Premium Wash"
               price="Rs 1,200"
               features={['Everything in Basic', 'Interior vacuum', 'Dashboard wipe', 'Air freshener', 'Window polish']}
               buttonStyle="primary"
               popular={true}
             />
-            <ServiceCard 
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 3L6 8v10c0 7.7 5.1 14.9 12 17 6.9-2.1 12-9.3 12-17V8L18 3z" fill="#C8A96E"/></svg>}
+            <ServiceCard
+              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 3L6 8v10c0 7.7 5.1 14.9 12 17 6.9-2.1 12-9.3 12-17V8L18 3z" fill="#C8A96E" /></svg>}
               title="Full Detail"
               price="Rs 2,500"
               features={['Everything in Premium', 'Clay bar treatment', 'Paint polish', 'Wax coating', 'Engine bay clean']}
@@ -210,10 +233,10 @@ export default function Page() {
         </div>
       </div>
 
-      {/* E. HOW IT WORKS */}
-      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#FFFFFF', padding: '120px 48px' }}>
+      {/* E. HOW IT WORKS (THE PROCESS) */}
+      <div id="process" style={{ position: 'relative', zIndex: 20, backgroundColor: '#FFFFFF', padding: '120px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '72px' }}>
-           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             THE PROCESS
           </div>
           <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A' }}>
@@ -221,23 +244,23 @@ export default function Page() {
           </div>
         </div>
         <div className="process-stack" style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', justifyContent: 'space-between' }}>
-          <ProcessStep 
-            number="01" 
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="20" rx="3" stroke="#C8A96E" strokeWidth="2"/><path d="M3 11h22" stroke="#C8A96E" strokeWidth="2"/><path d="M9 3v4M19 3v4" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round"/></svg>}
+          <ProcessStep
+            number="01"
+            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="20" rx="3" stroke="#C8A96E" strokeWidth="2" /><path d="M3 11h22" stroke="#C8A96E" strokeWidth="2" /><path d="M9 3v4M19 3v4" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round" /></svg>}
             title="Book Online"
             desc="Choose your service, pick a date and time that works for you"
           />
           <div className="process-connector" style={{ flex: '0 0 80px', borderTop: '2px dashed rgba(0,0,0,0.1)', marginTop: '40px' }} />
-          <ProcessStep 
-            number="02" 
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3a8 8 0 018 8c0 6-8 14-8 14S6 17 6 11a8 8 0 018-8z" stroke="#C8A96E" strokeWidth="2"/><circle cx="14" cy="11" r="3" stroke="#C8A96E" strokeWidth="2"/></svg>}
+          <ProcessStep
+            number="02"
+            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3a8 8 0 018 8c0 6-8 14-8 14S6 17 6 11a8 8 0 018-8z" stroke="#C8A96E" strokeWidth="2" /><circle cx="14" cy="11" r="3" stroke="#C8A96E" strokeWidth="2" /></svg>}
             title="We Come to You"
             desc="Our team arrives at your location fully equipped and ready"
           />
           <div className="process-connector" style={{ flex: '0 0 80px', borderTop: '2px dashed rgba(0,0,0,0.1)', marginTop: '40px' }} />
-          <ProcessStep 
-            number="03" 
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v22M3 14h22M7 7l14 14M21 7L7 21" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round"/></svg>}
+          <ProcessStep
+            number="03"
+            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v22M3 14h22M7 7l14 14M21 7L7 21" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round" /></svg>}
             title="Drive Away Shining"
             desc="Sit back, relax, and enjoy your freshly detailed car"
           />
@@ -255,17 +278,17 @@ export default function Page() {
           </div>
         </div>
         <div className="reviews-stack" style={{ display: 'flex', gap: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-          <ReviewCard 
+          <ReviewCard
             quote="&quot;My car has never looked this good. The premium package is absolutely worth every rupee.&quot;"
             name="Ahmed K."
             city="Lahore"
           />
-          <ReviewCard 
+          <ReviewCard
             quote="&quot;Booked online in 2 minutes and they were at my door in the morning. Incredible service.&quot;"
             name="Sara M."
             city="Islamabad"
           />
-          <ReviewCard 
+          <ReviewCard
             quote="&quot;The full detail made my 5 year old car look brand new. Highly recommend the wax coating.&quot;"
             name="Usman R."
             city="Karachi"
@@ -285,7 +308,7 @@ export default function Page() {
       </div>
 
       {/* H. FOOTER */}
-      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
+      <div id="footer" style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '64px', maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }}>
           <div>
             <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#FFFFFF' }}>SPARKLE.</div>
@@ -295,26 +318,26 @@ export default function Page() {
           </div>
 
           <div>
-             <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>SERVICES</div>
+            <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>SERVICES</div>
             {['Basic Wash', 'Premium Wash', 'Full Detail', 'Fleet Washing'].map(link => (
               <FooterLink key={link} text={link} />
             ))}
           </div>
 
           <div>
-             <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>COMPANY</div>
+            <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>COMPANY</div>
             {['About Us', 'How It Works', 'Reviews', 'Contact Us'].map(link => (
               <FooterLink key={link} text={link} />
             ))}
           </div>
 
           <div>
-             <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>CONTACT</div>
-             {['+92 300 1234567', 'hello@sparkle.pk', 'Lahore, Pakistan'].map((text, i) => (
-                <div key={i} style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.45)', marginBottom: '12px', display: 'block' }}>
-                  {text}
-                </div>
-             ))}
+            <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>CONTACT</div>
+            {['+92 300 1234567', 'hello@sparkle.pk', 'Lahore, Pakistan'].map((text, i) => (
+              <div key={i} style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.45)', marginBottom: '12px', display: 'block' }}>
+                {text}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -335,15 +358,15 @@ export default function Page() {
 // HELPER COMPONENTS
 // -----------------------------------------------------------------------------
 
-function HoverLink({ text }: { text: string }) {
+function HoverLink({ text, href }: { text: string, href: string }) {
   const [hover, setHover] = useState(false);
   return (
-    <a 
-      href="#" 
-      onMouseEnter={() => setHover(true)} 
+    <a
+      href={href}
+      onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', 
+        fontFamily: 'Inter', fontWeight: 500, fontSize: '14px',
         color: hover ? '#1A1A1A' : '#6B6B6B',
         textDecoration: 'none',
         transition: 'color 200ms ease'
@@ -364,7 +387,7 @@ function HoverButton({ text, primary, large, cta }: { text: string, primary: boo
 
   return (
     <button
-      onMouseEnter={() => setHover(true)} 
+      onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
         background: hover ? hoverBg : baseBg,
@@ -401,8 +424,8 @@ function ServiceCard({ icon, title, price, features, buttonStyle, popular }: { i
   const [hover, setHover] = useState(false);
 
   return (
-    <div 
-      onMouseEnter={() => setHover(true)} 
+    <div
+      onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
         background: '#FFFFFF',
@@ -504,12 +527,12 @@ function ReviewCard({ quote, name, city }: { quote: string, name: string, city: 
 function FooterLink({ text }: { text: string }) {
   const [hover, setHover] = useState(false);
   return (
-    <a 
-      href="#" 
-      onMouseEnter={() => setHover(true)} 
+    <a
+      href="#"
+      onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', 
+        fontFamily: 'Inter', fontWeight: 400, fontSize: '14px',
         color: hover ? '#FFFFFF' : 'rgba(255,255,255,0.45)',
         textDecoration: 'none',
         transition: 'color 200ms ease',
