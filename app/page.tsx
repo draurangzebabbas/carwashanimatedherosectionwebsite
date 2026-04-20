@@ -55,6 +55,7 @@ export default function Page() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        /* SCROLLING BACKGROUND: Moves with the page like a real door */
         background: `
           linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 30%, rgba(0,0,0,0.1) 100%),
           repeating-linear-gradient(
@@ -75,56 +76,38 @@ export default function Page() {
         <div style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.15,
+          opacity: 0.1,
           pointerEvents: 'none',
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           zIndex: 1
         }} />
 
-        {/* LEFT RAIL TRACK */}
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: '32px',
-          background: 'linear-gradient(to right, #444 0%, #222 20%, #333 80%, #111 100%)',
-          boxShadow: '4px 0 10px rgba(0,0,0,0.3)',
-          zIndex: 10
-        }} />
+        {/* RAIL TRACKS */}
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '24px', background: 'linear-gradient(to right, #444, #222, #333)', zIndex: 10, borderRight: '1px solid rgba(255,255,255,0.05)' }} />
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '24px', background: 'linear-gradient(to left, #444, #222, #333)', zIndex: 10, borderLeft: '1px solid rgba(255,255,255,0.05)' }} />
 
-        {/* RIGHT RAIL TRACK */}
-        <div style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: '32px',
-          background: 'linear-gradient(to left, #444 0%, #222 20%, #333 80%, #111 100%)',
-          boxShadow: '-4px 0 10px rgba(0,0,0,0.3)',
-          zIndex: 10
-        }} />
-
-        {/* SHUTTER GROOVE OVERLAY (Projects grooves onto the text for realism) */}
+        {/* MASTER SHUTTER PROJECTION (Ties text and background together) */}
         <div style={{
           position: 'absolute',
           inset: 0,
           background: `
             repeating-linear-gradient(
               to bottom,
-              transparent 0px,
-              transparent 36px,
-              rgba(0,0,0,0.2) 38px,
-              rgba(0,0,0,0.4) 39px,
+              rgba(255,255,255,0.4) 0px,
+              rgba(255,255,255,0.1) 2px,
+              transparent 4px,
+              transparent 35px,
+              rgba(0,0,0,0.15) 36px,
+              rgba(0,0,0,0.4) 38px,
+              rgba(0,0,0,0.2) 39px,
               transparent 40px
             )
           `,
           pointerEvents: 'none',
-          zIndex: 5
+          zIndex: 10
         }} />
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          {/* Main Heading with Slat-Sync Shading */}
+        <div style={{ position: 'relative', zIndex: 5 }}>
           <h1 style={{ 
             fontFamily: 'Inter', 
             fontWeight: 900, 
@@ -133,70 +116,31 @@ export default function Page() {
             letterSpacing: '-0.02em', 
             lineHeight: 0.95,
             textTransform: 'uppercase',
-            display: 'inline-block',
+            color: '#1A1A1A', 
             textAlign: 'center',
-            /* The Magic: Slat-synchronized gradient for 3D bending effect */
-            background: `
-              repeating-linear-gradient(
-                to bottom,
-                #1A1A1A 0px,
-                #2A2A2A 2px,
-                #1A1A1A 4px,
-                #131313 34px,
-                #000000 37px,
-                #000000 39px,
-                #1A1A1A 40px
-              )
-            `,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            filter: 'drop-shadow(0px 1px 0px rgba(255,255,255,0.3))',
+            opacity: 0.98,
+            filter: 'drop-shadow(0px 1px 0px rgba(255,255,255,0.4))',
             paddingBottom: '20px'
           }}>
             Premium Care for <br/>
             <span style={{ 
               display: 'block',
-              marginTop: '8px',
-              background: `
-                repeating-linear-gradient(
-                  to bottom,
-                  #B8975D 0px,
-                  #D4B581 2px,
-                  #B8975D 4px,
-                  #96763D 34px,
-                  #6B5226 37px,
-                  #523D19 39px,
-                  #B8975D 40px
-                )
-              `,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              marginTop: '12px',
+              color: '#B8975D',
             }}>Your Vehicle</span>
           </h1>
 
           <p style={{ 
             fontFamily: 'Inter', 
-            fontSize: '1.2rem', 
-            marginTop: '24px', 
+            fontSize: '1.05rem', 
+            marginTop: '32px', 
             maxWidth: '620px', 
-            margin: '24px auto 0',
+            margin: '32px auto 0',
             fontWeight: 700,
-            letterSpacing: '0.04em',
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            background: `
-              repeating-linear-gradient(
-                to bottom,
-                #4A4A4A 0px,
-                #5A5A5A 2px,
-                #4A4A4A 10px,
-                #3A3A3A 34px,
-                #1A1A1A 38px,
-                #4A4A4A 40px
-              )
-            `,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            opacity: 0.9
+            color: '#444444', 
+            opacity: 0.8
           }}>
             Scroll down to experience our interactive wash process from start to finish.
           </p>
