@@ -50,8 +50,11 @@ export default function Page() {
       <div style={{ 
         position: 'relative',
         zIndex: 20,
-        paddingTop: '140px', 
-        paddingBottom: '40px', 
+        height: '100vh', 
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#E0DEDD', 
         textAlign: 'center' 
       }}>
@@ -70,13 +73,14 @@ export default function Page() {
           fontFamily: 'Inter', 
           fontSize: '1.2rem', 
           color: '#6B6B6B', 
-          marginTop: '20px', 
+          marginTop: '24px', 
           maxWidth: '600px', 
-          margin: '20px auto 0' 
+          margin: '24px auto 0' 
         }}>
           Scroll down to experience our interactive wash process from start to finish.
         </p>
       </div>
+
 
 
       {/* C. SCROLL ANIMATION SECTION */}

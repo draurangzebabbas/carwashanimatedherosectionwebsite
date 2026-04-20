@@ -17,6 +17,7 @@ export default function CarWashScroll() {
   const frameIndexRef = useRef<number>(0);
   const animationCompleteRef = useRef<boolean>(false);
   const needsDrawRef = useRef<boolean>(false);
+  const exitTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [loadedCount, setLoadedCount] = useState(0);
   const [allLoaded, setAllLoaded] = useState(false);
@@ -24,6 +25,7 @@ export default function CarWashScroll() {
   const [animationComplete, setAnimationComplete] = useState(false);
   const [displayNone, setDisplayNone] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
+
 
   // PART 7 — CANVAS DRAW — COVER FIT, NO BLANK BARS
   const drawFrame = (index: number) => {
@@ -54,45 +56,48 @@ export default function CarWashScroll() {
 
   // PART 4 — SCROLL PROGRESS CALCULATION
   const handleScroll = () => {
-    const container = containerRef.current;
-    if (!container) return;
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
 
-    const rect = container.getBoundingClientRect();
-    const containerHeight = container.offsetHeight;
-    const viewportHeight = window.innerHeight;
-    const navbarHeight = 68;
+    // PART 4.1: ANIMATION TIMING
+    const startOffset = vh; 
+    const relativeScroll = Math.max(scrollY - startOffset, 0);
+    
+    // We want the user to see the dirty car for a moment (0.5 VH) before it starts washing
+    const washDelay = vh * 0.5; 
+    const washScroll = Math.max(relativeScroll - washDelay, 0);
+    
+    const animationScrollRange = vh * 4;
+    const progress = Math.min(washScroll / animationScrollRange, 1);
+    
+    // REMAPPING: Make the first 30 frames stay longer
+    let frameIndex;
+    if (progress < 0.15) {
+      // First 15% of scroll plays first 30 frames (slow start)
+      frameIndex = Math.floor((progress / 0.15) * 30);
+    } else {
+      // Remaining scroll plays the rest of the 240 frames
+      frameIndex = 30 + Math.floor(((progress - 0.15) / 0.85) * (TOTAL_FRAMES - 1 - 30));
+    }
+    
+    frameIndex = Math.min(Math.max(frameIndex, 0), TOTAL_FRAMES - 1);
 
-    const scrolled = -rect.top;
-    const totalScrollable = containerHeight - (viewportHeight - navbarHeight);
-    const progress = Math.min(1, Math.max(0, totalScrollable > 0 ? scrolled / totalScrollable : 0));
-
-    const frameIndex = Math.min(TOTAL_FRAMES - 1, Math.floor(progress * (TOTAL_FRAMES - 1)));
-
-    if (frameIndex !== frameIndexRef.current) {
+    if (frameIndex !== currentFrame) {
+      setCurrentFrame(frameIndex);
       frameIndexRef.current = frameIndex;
       needsDrawRef.current = true;
     }
-
-    if (frameIndex >= TOTAL_FRAMES - 1) {
-      if (!animationCompleteRef.current) {
-        animationCompleteRef.current = true;
-        setAnimationComplete(true);
-        // PART 3: After transition completes, set display: none
-        setTimeout(() => {
-          if (animationCompleteRef.current) setDisplayNone(true);
-        }, 900);
-      }
-    } else {
-      if (animationCompleteRef.current) {
-        animationCompleteRef.current = false;
-        setAnimationComplete(false);
-        setDisplayNone(false);
-      }
-    }
   };
+
+
+
+
 
   // Preload images
   useEffect(() => {
+    // Prevent multiple preload cycles during hot reloads
+    if (imagesRef.current.length > 0) return;
+
     let loaded = 0;
     const images: HTMLImageElement[] = [];
 
@@ -105,18 +110,18 @@ export default function CarWashScroll() {
         setLoadedCount(loaded);
         if (loaded === TOTAL_FRAMES) {
           setAllLoaded(true);
-          needsDrawRef.current = true; // Ensure we draw the first frame
-          // PART 2: canvasReady becomes true 100ms after images load
+          needsDrawRef.current = true;
           setTimeout(() => setCanvasReady(true), 100);
         }
       };
 
       img.onload = onImageLoad;
-      img.onerror = onImageLoad; // Don't get stuck on a broken image
+      img.onerror = onImageLoad;
       images.push(img);
     }
     imagesRef.current = images;
   }, []);
+
 
   // Listeners and Draw loop
   useEffect(() => {
@@ -196,11 +201,13 @@ export default function CarWashScroll() {
       <div
         ref={containerRef}
         style={{
-          height: `calc(100vh + ${TOTAL_FRAMES * 16}px)`,
+          height: '500vh', // Significant height to allow the stats section to roll up over the car
           position: 'relative',
           backgroundColor: '#E0DEDD',
         }}
       >
+
+
         <canvas
           ref={canvasRef}
           style={{
@@ -209,76 +216,125 @@ export default function CarWashScroll() {
             left: '0',
             width: '100vw',
             height: 'calc(100vh - 68px)',
-            display: displayNone ? 'none' : 'block',
+            display: 'block',
             backgroundColor: '#E0DEDD',
             zIndex: 10,
             pointerEvents: 'none',
-            // PART 2 & 3: Entry and Exit Animation
-            opacity: !canvasReady ? 0 : (animationComplete ? 0 : 1),
-            transform: !canvasReady 
-              ? 'translateY(60px)' 
-              : (animationComplete ? 'translateY(-60px)' : 'translateY(0px)'),
+            // PART 2: Simple Entry
+            opacity: !canvasReady ? 0 : 1,
+            transform: !canvasReady ? 'translateY(60px)' : 'translateY(0px)',
             transition: 'transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease',
           }}
         />
+
 
         {/* PART 6 — TEXT OVERLAYS */}
         
         {/* Overlay 1 — Dirty Car — Frames 0 to 55 */}
         <div style={{
           position: 'fixed',
-          bottom: '10%',
+          bottom: '12%',
           left: '6%',
           zIndex: 15,
-          maxWidth: '320px',
+          maxWidth: '420px',
           opacity: currentFrame < 10 ? currentFrame / 10 : currentFrame > 45 ? 1 - (currentFrame - 45) / 10 : 1,
           transform: `translateY(${currentFrame < 10 ? (10 - currentFrame) * 3 : 0}px)`,
           transition: 'opacity 400ms ease, transform 400ms ease',
           pointerEvents: 'none',
-          display: currentFrame > 55 ? 'none' : 'block'
+          display: currentFrame > 55 ? 'none' : 'block',
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          padding: '24px',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ color: '#C8A96E', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontFamily: 'Inter', fontWeight: 600, textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>Before</div>
-          <div style={{ color: '#1A1A1A', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', textShadow: '0 2px 15px rgba(255,255,255,0.5)' }}>Your Car<br/>Deserves Better</div>
-          <div style={{ color: '#4A4A4A', fontSize: '14px', marginTop: '10px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>Don't let dirt define your drive</div>
+          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
+            Your Car <span style={{ color: '#C8A96E' }}>Deserves Better</span>
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>
+            Don't let dirt define your drive. Give your vehicle the treatment it truly earns.
+          </div>
         </div>
+
+
 
         {/* Overlay 2 — Being Washed — Frames 70 to 165 */}
         <div style={{
           position: 'fixed',
-          bottom: '10%',
+          bottom: '12%',
           right: '6%',
           zIndex: 15,
-          maxWidth: '320px',
+          maxWidth: '420px',
           textAlign: 'right',
           opacity: currentFrame < 70 ? 0 : currentFrame < 80 ? (currentFrame - 70) / 10 : currentFrame > 155 ? 1 - (currentFrame - 155) / 10 : 1,
           transform: `translateY(${currentFrame < 80 ? (80 - currentFrame) * 3 : 0}px)`,
           transition: 'opacity 400ms ease, transform 400ms ease',
           pointerEvents: 'none',
-          display: (currentFrame < 70 || currentFrame > 165) ? 'none' : 'block'
+          display: (currentFrame < 70 || currentFrame > 165) ? 'none' : 'block',
+          background: 'rgba(255, 255, 255, 0.03)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          padding: '24px',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ color: '#C8A96E', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontFamily: 'Inter', fontWeight: 600, textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>The Process</div>
-          <div style={{ color: '#1A1A1A', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', textShadow: '0 2px 15px rgba(255,255,255,0.5)' }}>Professional<br/>Care</div>
-          <div style={{ color: '#4A4A4A', fontSize: '14px', marginTop: '10px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>High pressure wash removes every layer of dirt and grime</div>
+          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
+            Professional <span style={{ color: '#C8A96E' }}>Washing</span>
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>
+            High pressure wash removes every layer of dirt and grime in minutes.
+          </div>
         </div>
 
-        {/* Overlay 3 — Clean Car — Frames 185 to 239 */}
+
+
+        {/* Overlay 3 — Clean Car — Frames 215 to 239 */}
         <div style={{
           position: 'fixed',
-          bottom: '10%',
+          bottom: '12%',
           left: '50%',
-          transform: `translateX(-50%) translateY(${currentFrame < 195 ? (195 - currentFrame) * 3 : 0}px)`,
+          transform: `translateX(-50%) translateY(${currentFrame < 225 ? (225 - currentFrame) * 3 : 0}px)`,
           zIndex: 15,
           textAlign: 'center',
-          opacity: currentFrame < 185 ? 0 : currentFrame < 195 ? (currentFrame - 185) / 10 : 1,
+          opacity: currentFrame < 215 ? 0 : currentFrame < 225 ? (currentFrame - 215) / 10 : 1,
           transition: 'opacity 400ms ease, transform 400ms ease',
-          pointerEvents: currentFrame >= 185 ? 'auto' : 'none',
-          display: currentFrame < 185 ? 'none' : 'block'
+          pointerEvents: currentFrame >= 215 ? 'auto' : 'none',
+          display: currentFrame < 215 ? 'none' : 'block',
+
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(15px)',
+          WebkitBackdropFilter: 'blur(15px)',
+          padding: '32px 48px',
+          borderRadius: '30px',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          boxShadow: '0 15px 45px rgba(0,0,0,0.2)',
+          width: 'max-content'
         }}>
-          <div style={{ color: '#C8A96E', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontFamily: 'Inter', fontWeight: 600, textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>The Result</div>
-          <div style={{ color: '#1A1A1A', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', textShadow: '0 2px 15px rgba(255,255,255,0.5)' }}>Ready to Book?</div>
-          <div style={{ color: '#4A4A4A', fontSize: '14px', marginTop: '10px', marginBottom: '20px', fontFamily: 'Inter', fontWeight: 500 }}>Starting from Rs 500</div>
-          <button style={{ background: '#1A1A1A', color: '#FFFFFF', border: 'none', padding: '12px 32px', borderRadius: '100px', fontFamily: 'Inter', fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0,0,0,0.25)' }}>Book Now</button>
+          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', marginBottom: '24px' }}>
+            Starting from <span style={{ color: '#C8A96E' }}>Rs 500</span>
+          </div>
+          <button style={{ 
+            background: '#C8A96E', 
+            color: '#181818', 
+            border: 'none', 
+            padding: '16px 48px', 
+            borderRadius: '100px', 
+            fontFamily: 'Inter', 
+            fontWeight: 800, 
+            fontSize: '16px', 
+            cursor: 'pointer', 
+            boxShadow: '0 10px 25px rgba(200,169,110,0.4)',
+            transition: 'all 300ms ease'
+          }}>
+            Book Now
+          </button>
         </div>
+
+
+
       </div>
     </>
   );
