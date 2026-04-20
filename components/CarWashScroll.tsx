@@ -201,11 +201,14 @@ export default function CarWashScroll() {
       <div
         ref={containerRef}
         style={{
-          height: '500vh', // Significant height to allow the stats section to roll up over the car
+          height: '620vh', // Significant height to allow the clean car to 'hold' before stats section rises
           position: 'relative',
           backgroundColor: '#E0DEDD',
         }}
       >
+
+
+
 
 
         <canvas
@@ -260,19 +263,21 @@ export default function CarWashScroll() {
 
 
 
-        {/* Overlay 2 — Being Washed — Frames 70 to 165 */}
+        {/* Overlay 2 — Being Washed — Frames 120 to 215 */}
         <div style={{
           position: 'fixed',
           bottom: '12%',
           right: '6%',
           zIndex: 15,
-          maxWidth: '420px',
+          maxWidth: '800px',
           textAlign: 'right',
-          opacity: currentFrame < 70 ? 0 : currentFrame < 80 ? (currentFrame - 70) / 10 : currentFrame > 155 ? 1 - (currentFrame - 155) / 10 : 1,
-          transform: `translateY(${currentFrame < 80 ? (80 - currentFrame) * 3 : 0}px)`,
+          opacity: currentFrame < 120 ? 0 : currentFrame < 130 ? (currentFrame - 120) / 10 : currentFrame > 205 ? 1 - (currentFrame - 205) / 10 : 1,
+          transform: `translateY(${currentFrame < 130 ? (130 - currentFrame) * 3 : 0}px)`,
           transition: 'opacity 400ms ease, transform 400ms ease',
           pointerEvents: 'none',
-          display: (currentFrame < 70 || currentFrame > 165) ? 'none' : 'block',
+          display: (currentFrame < 120 || currentFrame > 215) ? 'none' : 'block',
+
+
           background: 'rgba(255, 255, 255, 0.03)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -284,25 +289,28 @@ export default function CarWashScroll() {
           <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
             Professional <span style={{ color: '#C8A96E' }}>Washing</span>
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>
+          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500, whiteSpace: 'nowrap' }}>
             High pressure wash removes every layer of dirt and grime in minutes.
           </div>
         </div>
 
 
 
-        {/* Overlay 3 — Clean Car — Frames 215 to 239 */}
+
+        {/* Overlay 3 — Clean Car — Frames 235 to 239 */}
         <div style={{
           position: 'fixed',
           bottom: '12%',
           left: '50%',
-          transform: `translateX(-50%) translateY(${currentFrame < 225 ? (225 - currentFrame) * 3 : 0}px)`,
+          transform: `translateX(-50%) translateY(${currentFrame < 238 ? (238 - currentFrame) * 10 : 0}px)`,
           zIndex: 15,
           textAlign: 'center',
-          opacity: currentFrame < 215 ? 0 : currentFrame < 225 ? (currentFrame - 215) / 10 : 1,
+          opacity: currentFrame < 235 ? 0 : 1,
           transition: 'opacity 400ms ease, transform 400ms ease',
-          pointerEvents: currentFrame >= 215 ? 'auto' : 'none',
-          display: currentFrame < 215 ? 'none' : 'block',
+          pointerEvents: currentFrame >= 235 ? 'auto' : 'none',
+          display: currentFrame < 235 ? 'none' : 'block',
+
+
 
           background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(15px)',
