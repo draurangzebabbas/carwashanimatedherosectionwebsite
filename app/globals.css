@@ -12,13 +12,10 @@
   display: none;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 html, body {
+  overflow-x: hidden;
   background-color: #E0DEDD;
   font-family: 'Inter', system-ui, sans-serif;
   color: #1A1A1A;
-  overflow-x: hidden;
 }
+

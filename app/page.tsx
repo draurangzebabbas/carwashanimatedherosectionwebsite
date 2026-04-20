@@ -47,7 +47,14 @@ export default function Page() {
       </nav>
 
       {/* B. HERO SECTION INTRO */}
-      <div style={{ paddingTop: '140px', paddingBottom: '40px', backgroundColor: '#E0DEDD', textAlign: 'center' }}>
+      <div style={{ 
+        position: 'relative',
+        zIndex: 20,
+        paddingTop: '140px', 
+        paddingBottom: '40px', 
+        backgroundColor: '#E0DEDD', 
+        textAlign: 'center' 
+      }}>
         <h1 style={{ 
           fontFamily: 'Inter', 
           fontWeight: 800, 
@@ -71,6 +78,7 @@ export default function Page() {
         </p>
       </div>
 
+
       {/* C. SCROLL ANIMATION SECTION */}
       <div style={{ paddingTop: '0px' }}>
         <CarWashScroll />
@@ -78,7 +86,7 @@ export default function Page() {
 
 
       {/* C. STATS BAR */}
-      <div style={{ backgroundColor: '#181818', padding: '56px 48px' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', padding: '56px 48px' }}>
         <div className="stats-grid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap' }}>
           <StatBox number="2,400+" label="Happy Customers" />
           <div className="stats-divider" style={{ width: '1px', height: '44px', background: 'rgba(255,255,255,0.1)' }} />
@@ -91,7 +99,7 @@ export default function Page() {
       </div>
 
       {/* D. SERVICES SECTION */}
-      <div style={{ backgroundColor: '#E0DEDD', padding: '120px 48px' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '120px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             OUR SERVICES
@@ -133,7 +141,7 @@ export default function Page() {
       </div>
 
       {/* E. HOW IT WORKS */}
-      <div style={{ backgroundColor: '#FFFFFF', padding: '120px 48px' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#FFFFFF', padding: '120px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '72px' }}>
            <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             THE PROCESS
@@ -167,7 +175,7 @@ export default function Page() {
       </div>
 
       {/* F. TESTIMONIALS */}
-      <div style={{ backgroundColor: '#181818', padding: '120px 48px' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', padding: '120px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '72px' }}>
           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             REVIEWS
@@ -196,7 +204,7 @@ export default function Page() {
       </div>
 
       {/* G. BOOKING CTA BANNER */}
-      <div style={{ backgroundColor: '#C8A96E', padding: '100px 48px', textAlign: 'center' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#C8A96E', padding: '100px 48px', textAlign: 'center' }}>
         <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: '#1A1A1A' }}>
           Ready for a Cleaner Car?
         </div>
@@ -207,7 +215,7 @@ export default function Page() {
       </div>
 
       {/* H. FOOTER */}
-      <div style={{ backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
+      <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '64px', maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }}>
           <div>
             <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#FFFFFF' }}>SPARKLE.</div>

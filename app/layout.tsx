@@ -3,7 +3,7 @@ export const metadata = { title: 'Sparkle — Premium Car Wash', description: 'B
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
