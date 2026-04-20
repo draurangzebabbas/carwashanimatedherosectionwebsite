@@ -72,9 +72,10 @@ export default function Page() {
       </div>
 
       {/* C. SCROLL ANIMATION SECTION */}
-      <div>
+      <div style={{ paddingTop: '0px' }}>
         <CarWashScroll />
       </div>
+
 
       {/* C. STATS BAR */}
       <div style={{ backgroundColor: '#181818', padding: '56px 48px' }}>
