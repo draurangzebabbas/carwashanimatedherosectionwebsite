@@ -22,9 +22,8 @@ export default function CarWashScroll() {
   const [loadedCount, setLoadedCount] = useState(0);
   const [allLoaded, setAllLoaded] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
-  const [animationComplete, setAnimationComplete] = useState(false);
-  const [displayNone, setDisplayNone] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
+
 
 
   // PART 7 — CANVAS DRAW — COVER FIT, NO BLANK BARS
@@ -63,31 +62,19 @@ export default function CarWashScroll() {
     const startOffset = vh; 
     const relativeScroll = Math.max(scrollY - startOffset, 0);
     
-    // We want the user to see the dirty car for a moment (0.5 VH) before it starts washing
-    const washDelay = vh * 0.5; 
-    const washScroll = Math.max(relativeScroll - washDelay, 0);
+    // Smooth linear mapping over a long range (5.5 VH)
+    const animationScrollRange = vh * 5.5;
+    const progress = Math.min(relativeScroll / animationScrollRange, 1);
     
-    const animationScrollRange = vh * 4;
-    const progress = Math.min(washScroll / animationScrollRange, 1);
-    
-    // REMAPPING: Make the first 30 frames stay longer
-    let frameIndex;
-    if (progress < 0.15) {
-      // First 15% of scroll plays first 30 frames (slow start)
-      frameIndex = Math.floor((progress / 0.15) * 30);
-    } else {
-      // Remaining scroll plays the rest of the 240 frames
-      frameIndex = 30 + Math.floor(((progress - 0.15) / 0.85) * (TOTAL_FRAMES - 1 - 30));
-    }
-    
+    let frameIndex = Math.floor(progress * (TOTAL_FRAMES - 1));
     frameIndex = Math.min(Math.max(frameIndex, 0), TOTAL_FRAMES - 1);
 
-    if (frameIndex !== currentFrame) {
-      setCurrentFrame(frameIndex);
+    if (frameIndex !== frameIndexRef.current) {
       frameIndexRef.current = frameIndex;
       needsDrawRef.current = true;
     }
   };
+
 
 
 
@@ -133,6 +120,11 @@ export default function CarWashScroll() {
 
     let raf: number;
     const render = () => {
+      // Update React state for overlays in sync with animation loop
+      if (currentFrame !== frameIndexRef.current) {
+        setCurrentFrame(frameIndexRef.current);
+      }
+
       if (needsDrawRef.current) {
         drawFrame(frameIndexRef.current);
         needsDrawRef.current = false;
@@ -141,6 +133,7 @@ export default function CarWashScroll() {
     };
     raf = requestAnimationFrame(render);
 
+
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('scroll', handleScroll);
@@ -148,15 +141,7 @@ export default function CarWashScroll() {
     };
   }, [allLoaded]);
 
-  // PART 6: Text Overlays polling
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentFrame !== frameIndexRef.current) {
-        setCurrentFrame(frameIndexRef.current);
-      }
-    }, 50);
-    return () => clearInterval(interval);
-  }, [currentFrame]);
+
 
   const loadPercentage = Math.floor((loadedCount / TOTAL_FRAMES) * 100);
 
@@ -201,11 +186,12 @@ export default function CarWashScroll() {
       <div
         ref={containerRef}
         style={{
-          height: '620vh', // Significant height to allow the clean car to 'hold' before stats section rises
+          height: '750vh', // Significant height to allow the clean car and booking card to 'hold' before stats section rises
           position: 'relative',
           backgroundColor: '#E0DEDD',
         }}
       >
+
 
 
 
@@ -231,20 +217,21 @@ export default function CarWashScroll() {
         />
 
 
+
         {/* PART 6 — TEXT OVERLAYS */}
         
-        {/* Overlay 1 — Dirty Car — Frames 0 to 55 */}
+        {/* Overlay 1 — Dirty Car — Frames 15 to 65 */}
         <div style={{
           position: 'fixed',
           bottom: '12%',
           left: '6%',
           zIndex: 15,
           maxWidth: '420px',
-          opacity: currentFrame < 10 ? currentFrame / 10 : currentFrame > 45 ? 1 - (currentFrame - 45) / 10 : 1,
-          transform: `translateY(${currentFrame < 10 ? (10 - currentFrame) * 3 : 0}px)`,
-          transition: 'opacity 400ms ease, transform 400ms ease',
+          opacity: currentFrame < 15 ? 0 : currentFrame < 25 ? (currentFrame - 15) / 10 : currentFrame > 55 ? 1 - (currentFrame - 55) / 10 : 1,
+          transform: `translateY(${currentFrame < 25 ? (25 - currentFrame) * 3 : 0}px)`,
+          transition: 'opacity 300ms ease, transform 300ms ease',
           pointerEvents: 'none',
-          display: currentFrame > 55 ? 'none' : 'block',
+          display: (currentFrame < 15 || currentFrame > 65) ? 'none' : 'block',
           background: 'rgba(255, 255, 255, 0.03)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -263,7 +250,7 @@ export default function CarWashScroll() {
 
 
 
-        {/* Overlay 2 — Being Washed — Frames 120 to 215 */}
+        {/* Overlay 2 — Being Washed — Frames 110 to 190 */}
         <div style={{
           position: 'fixed',
           bottom: '12%',
@@ -271,13 +258,11 @@ export default function CarWashScroll() {
           zIndex: 15,
           maxWidth: '800px',
           textAlign: 'right',
-          opacity: currentFrame < 120 ? 0 : currentFrame < 130 ? (currentFrame - 120) / 10 : currentFrame > 205 ? 1 - (currentFrame - 205) / 10 : 1,
-          transform: `translateY(${currentFrame < 130 ? (130 - currentFrame) * 3 : 0}px)`,
-          transition: 'opacity 400ms ease, transform 400ms ease',
+          opacity: currentFrame < 110 ? 0 : currentFrame < 120 ? (currentFrame - 110) / 10 : currentFrame > 180 ? 1 - (currentFrame - 180) / 10 : 1,
+          transform: `translateY(${currentFrame < 120 ? (120 - currentFrame) * 3 : 0}px)`,
+          transition: 'opacity 300ms ease, transform 300ms ease',
           pointerEvents: 'none',
-          display: (currentFrame < 120 || currentFrame > 215) ? 'none' : 'block',
-
-
+          display: (currentFrame < 110 || currentFrame > 190) ? 'none' : 'block',
           background: 'rgba(255, 255, 255, 0.03)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -297,21 +282,18 @@ export default function CarWashScroll() {
 
 
 
-        {/* Overlay 3 — Clean Car — Frames 235 to 239 */}
+        {/* Overlay 3 — Clean Car — Frames 225 to 240 */}
         <div style={{
           position: 'fixed',
           bottom: '12%',
           left: '50%',
-          transform: `translateX(-50%) translateY(${currentFrame < 238 ? (238 - currentFrame) * 10 : 0}px)`,
+          transform: `translateX(-50%) translateY(${currentFrame < 235 ? (235 - currentFrame) * 3 : 0}px)`,
           zIndex: 15,
           textAlign: 'center',
-          opacity: currentFrame < 235 ? 0 : 1,
-          transition: 'opacity 400ms ease, transform 400ms ease',
-          pointerEvents: currentFrame >= 235 ? 'auto' : 'none',
-          display: currentFrame < 235 ? 'none' : 'block',
-
-
-
+          opacity: currentFrame < 225 ? 0 : currentFrame < 235 ? (currentFrame - 225) / 10 : 1,
+          transition: 'opacity 300ms ease, transform 300ms ease',
+          pointerEvents: currentFrame >= 225 ? 'auto' : 'none',
+          display: currentFrame < 225 ? 'none' : 'block',
           background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(15px)',
           WebkitBackdropFilter: 'blur(15px)',
