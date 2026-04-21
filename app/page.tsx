@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Sparkles, RefreshCw, Crown } from 'lucide-react';
 import CarWashScroll from '../components/CarWashScroll';
 
 export default function Page() {
@@ -197,39 +198,14 @@ export default function Page() {
           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             OUR PACKAGES
           </div>
-          <div style={{ marginBottom: '16px', fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A' }}>
-            Choose Your Package
+          <div style={{ marginBottom: '16px', fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A', lineHeight: '1.2' }}>
+            Your Car. Your Schedule. Your Door.
           </div>
-          <div style={{ marginBottom: '72px', fontFamily: 'Inter', fontWeight: 400, fontSize: '16px', color: '#6B6B6B', maxWidth: '460px', lineHeight: '1.7' }}>
-            Every wash is performed by trained professionals using premium products
+          <div style={{ marginBottom: '72px', fontFamily: 'Inter', fontWeight: 400, fontSize: '18px', color: '#6B6B6B', maxWidth: '540px', lineHeight: '1.6' }}>
+            Book in 60 seconds. We show up with everything. You just hand us the keys.
           </div>
 
-          <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-            <ServiceCard
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4C18 4 8 16 8 22a10 10 0 0020 0C28 16 18 4 18 4z" fill="#C8A96E" /></svg>}
-              title="Basic Wash"
-              price="Rs 500"
-              features={['Exterior rinse', 'Soap wash', 'Wheel clean', 'Hand dry']}
-              buttonStyle="outline"
-              popular={false}
-            />
-            <ServiceCard
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 4l2.5 9.5H30l-8 5.8 3 9.7-7-5.1-7 5.1 3-9.7-8-5.8h9.5z" fill="#C8A96E" /></svg>}
-              title="Premium Wash"
-              price="Rs 1,200"
-              features={['Everything in Basic', 'Interior vacuum', 'Dashboard wipe', 'Air freshener', 'Window polish']}
-              buttonStyle="primary"
-              popular={true}
-            />
-            <ServiceCard
-              icon={<svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 3L6 8v10c0 7.7 5.1 14.9 12 17 6.9-2.1 12-9.3 12-17V8L18 3z" fill="#C8A96E" /></svg>}
-              title="Full Detail"
-              price="Rs 2,500"
-              features={['Everything in Premium', 'Clay bar treatment', 'Paint polish', 'Wax coating', 'Engine bay clean']}
-              buttonStyle="outline"
-              popular={false}
-            />
-          </div>
+          <PackagesGrid />
         </div>
       </div>
 
@@ -358,6 +334,61 @@ export default function Page() {
 // HELPER COMPONENTS
 // -----------------------------------------------------------------------------
 
+function PackagesGrid() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const packages = [
+    {
+      icon: Sparkles,
+      title: "The Daily Driver",
+      tagline: "Your car sees everything you do. Keep it clean.",
+      price: "$49",
+      subPrice: "$59 for SUV/Truck",
+      oneLiner: "Perfect for every 2–3 weeks. In and out in under an hour, at your driveway.",
+      features: ['Premium foam hand wash — exterior', 'Wheel and rim scrub', 'Tyre dressing — jet black finish', 'All windows exterior cleaned', 'Hand dried with microfibre towels', 'Door jambs wiped'],
+      buttonText: "Get It Done",
+      popular: false
+    },
+    {
+      icon: RefreshCw,
+      title: "The Sunday Reset",
+      tagline: "Start the week feeling like everything is in order.",
+      price: "$99",
+      subPrice: "$119 for SUV/Truck",
+      oneLiner: "Inside and out. The wash that actually makes your car feel new again.",
+      features: ['Everything in The Daily Driver', 'Full interior vacuum including boot and under seats', 'Dashboard, console, vents, and door panels detailed', 'Cup holders deep cleaned', 'Interior windows cleaned streak-free', 'Leather or fabric seats wiped and conditioned', 'Premium car scent applied', 'Tyre shine'],
+      buttonText: "Book My Reset",
+      popular: true
+    },
+    {
+      icon: Crown,
+      title: "The White Glove",
+      tagline: "For when your car deserves to be treated like it just left the showroom.",
+      price: "$199",
+      subPrice: "$249 for SUV/Truck",
+      oneLiner: "The full restoration. Recommended every 3 months or before selling your car.",
+      features: ['Everything in The Sunday Reset', 'Clay bar treatment — removes all bonded contamination from paint', 'Machine orbital polish — removes light scratches and swirl marks', 'Hand applied carnauba wax — protection for 3 months', 'Engine bay detail and clean', 'Headlight polish and restoration', 'Full interior shampoo — carpets and seats', 'Odour elimination treatment', 'Tyre and rim deep restore'],
+      buttonText: "Book White Glove",
+      popular: false
+    }
+  ];
+
+  return (
+    <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+      {packages.map((pkg, i) => (
+        <ServiceCard
+          key={i}
+          {...pkg}
+          isFocused={hoveredIndex === i}
+          isDimmed={hoveredIndex !== null && hoveredIndex !== i}
+          onHover={() => setHoveredIndex(i)}
+          onLeave={() => setHoveredIndex(null)}
+        />
+      ))}
+    </div>
+  );
+}
+
 function HoverLink({ text, href }: { text: string, href: string }) {
   const [hover, setHover] = useState(false);
   return (
@@ -420,66 +451,116 @@ function StatBox({ number, label }: { number: string, label: string }) {
   );
 }
 
-function ServiceCard({ icon, title, price, features, buttonStyle, popular }: { icon: React.ReactNode, title: string, price: string, features: string[], buttonStyle: 'primary' | 'outline', popular: boolean }) {
-  const [hover, setHover] = useState(false);
-
+function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, features, buttonText, popular, isFocused, isDimmed, onHover, onLeave }: { icon: React.ElementType, title: string, tagline: string, price: string, subPrice: string, oneLiner: string, features: string[], buttonText: string, popular: boolean, isFocused: boolean, isDimmed: boolean, onHover: () => void, onLeave: () => void }) {
   return (
     <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
       style={{
         background: '#FFFFFF',
-        border: '1px solid rgba(0,0,0,0.07)',
-        borderRadius: '20px',
-        padding: '40px 32px',
+        border: popular ? (isFocused ? '2px solid #C8A96E' : '2px solid #1A1A1A') : '1px solid rgba(0,0,0,0.07)',
+        borderRadius: '24px',
+        padding: '48px 32px 40px',
         position: 'relative',
-        transition: 'transform 300ms ease, box-shadow 300ms ease',
+        transition: 'all 500ms cubic-bezier(0.23, 1, 0.32, 1)',
         cursor: 'pointer',
-        transform: hover ? 'translateY(-8px)' : 'translateY(0)',
-        boxShadow: hover ? '0 24px 64px rgba(0,0,0,0.09)' : 'none',
+        opacity: isDimmed ? 0.6 : 1,
+        transform: popular ? (isFocused ? 'translateY(-16px) scale(1.02)' : 'translateY(-4px)') : (isFocused ? 'translateY(-8px)' : 'translateY(0)'),
+        boxShadow: popular 
+          ? (isFocused ? '0 40px 80px rgba(200, 169, 110, 0.15)' : '0 16px 48px rgba(0,0,0,0.08)') 
+          : (isFocused ? '0 24px 48px rgba(0,0,0,0.06)' : 'none'),
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        zIndex: isFocused ? 10 : (popular ? 2 : 1),
+        filter: isDimmed ? 'grayscale(0.2) blur(0.5px)' : 'none',
       }}
     >
       {popular && (
-        <div style={{ position: 'absolute', top: '24px', right: '24px', background: '#1A1A1A', color: '#FFFFFF', fontSize: '11px', fontFamily: 'Inter', fontWeight: 600, padding: '4px 14px', borderRadius: '100px' }}>
+        <div style={{ 
+          position: 'absolute', 
+          top: '-14px', 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          background: '#1A1A1A', 
+          color: '#FFFFFF', 
+          fontSize: '11px', 
+          fontFamily: 'Inter', 
+          fontWeight: 700, 
+          padding: '6px 16px', 
+          borderRadius: '100px',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase'
+        }}>
           Most Popular
         </div>
       )}
+      
+      <div style={{ marginBottom: '20px' }}>
+        <Icon size={36} color="#C8A96E" strokeWidth={1.5} />
+      </div>
+      
       <div style={{ marginBottom: '24px' }}>
-        {icon}
+        <h3 style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '22px', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.2 }}>
+          {title}
+        </h3>
+        <p style={{ fontFamily: 'Inter', fontWeight: 400, fontStyle: 'italic', fontSize: '13px', color: '#6B6B6B' }}>
+          {tagline}
+        </p>
       </div>
-      <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '22px', color: '#1A1A1A', marginBottom: '8px' }}>
-        {title}
+
+      <div style={{ marginBottom: '28px' }}>
+        <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '32px', color: '#C8A96E', lineHeight: 1 }}>
+          {price}
+        </div>
+        <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '12px', color: 'rgba(0,0,0,0.4)', marginTop: '6px' }}>
+          {subPrice}
+        </div>
+        <div style={{ height: '1px', background: 'rgba(0,0,0,0.06)', width: '100%', marginTop: '20px' }} />
+        <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: '#444', marginTop: '16px', lineHeight: 1.5 }}>
+          {oneLiner}
+        </p>
       </div>
-      <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '32px', color: '#C8A96E', marginBottom: '28px' }}>
-        {price}
-      </div>
-      <div style={{ flex: 1 }}>
+
+      <div style={{ flex: 1, marginBottom: '32px' }}>
         {features.map((feat, i) => (
-          <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '10px', alignItems: 'flex-start' }}>
-            <span style={{ color: '#C8A96E', fontSize: '14px', flexShrink: 0 }}>✓</span>
-            <span style={{ color: '#6B6B6B', fontSize: '14px', fontFamily: 'Inter', lineHeight: 1.4 }}>{feat}</span>
+          <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '14px', alignItems: 'flex-start' }}>
+            <span style={{ 
+              color: '#C8A96E', 
+              fontSize: '12px', 
+              flexShrink: 0, 
+              marginTop: '2px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '18px',
+              height: '18px',
+              background: 'rgba(200, 169, 110, 0.1)',
+              borderRadius: '50%'
+            }}>✓</span>
+            <span style={{ color: '#555', fontSize: '14px', fontFamily: 'Inter', lineHeight: 1.45 }}>{feat}</span>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: '32px' }}>
+
+      <div style={{ marginTop: 'auto' }}>
         <button
           style={{
-            background: hover ? (buttonStyle === 'primary' ? '#C8A96E' : '#1A1A1A') : (buttonStyle === 'primary' ? '#1A1A1A' : 'transparent'),
-            color: hover ? (buttonStyle === 'primary' ? '#1A1A1A' : '#FFFFFF') : (buttonStyle === 'primary' ? '#FFFFFF' : '#1A1A1A'),
-            border: buttonStyle === 'primary' ? 'none' : '1.5px solid #1A1A1A',
-            padding: '12px 28px',
-            borderRadius: '100px',
+            background: popular ? '#C8A96E' : (isFocused ? '#1A1A1A' : '#F5f5f5'),
+            color: popular ? '#1A1A1A' : (isFocused ? '#FFFFFF' : '#6B6B6B'),
+            border: 'none',
+            padding: '16px 28px',
+            borderRadius: '12px',
             fontFamily: 'Inter',
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: '14px',
             cursor: 'pointer',
             width: '100%',
-            transition: 'background 200ms ease, color 200ms ease'
+            transition: 'all 300ms ease',
+            boxShadow: popular ? '0 8px 20px rgba(200, 169, 110, 0.25)' : (isFocused ? '0 8px 20px rgba(0,0,0,0.1)' : 'none'),
+            transform: isFocused ? 'scale(1.02)' : 'scale(1)',
           }}
         >
-          Book Now
+          {buttonText}
         </button>
       </div>
     </div>
