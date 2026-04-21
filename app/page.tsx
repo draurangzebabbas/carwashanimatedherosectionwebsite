@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, RefreshCw, Crown, Smartphone, Truck } from 'lucide-react';
+import { Sparkles, RefreshCw, Crown } from 'lucide-react';
 import CarWashScroll from '../components/CarWashScroll';
+import TheProcess from '../components/TheProcess'
 
 export default function Page() {
   return (
@@ -210,44 +211,7 @@ export default function Page() {
       </div>
 
       {/* E. HOW IT WORKS (THE PROCESS) */}
-      <div id="process" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '120px 48px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '80px' }}>
-          <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-            THE PROCESS
-          </div>
-          <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A', marginBottom: '16px' }}>
-            From Your Phone to Your Driveway
-          </div>
-          <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '18px', color: '#6B6B6B', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-            In three steps, your car goes from dirty to showroom clean — without you going anywhere.
-          </div>
-        </div>
-        <div className="process-stack" style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', justifyContent: 'space-between', gap: '20px' }}>
-          <ProcessStep
-            number="1"
-            icon={Smartphone}
-            title="Book in 60 Seconds"
-            desc="Pick your package, drop your address, choose a time slot. Morning, afternoon, or weekend — we work around you. No phone calls. No waiting."
-          />
-          <div className="process-connector" style={{ flex: '1', borderTop: '2px dotted rgba(0,0,0,0.15)', marginTop: '80px' }} />
-          <ProcessStep
-            number="2"
-            icon={Truck}
-            title="We Arrive Fully Equipped"
-            desc="Our team shows up with everything — water, power, premium products, and professional equipment. You do not need to provide anything. Just hand us the keys and go about your day."
-          />
-          <div className="process-connector" style={{ flex: '1', borderTop: '2px dotted rgba(0,0,0,0.15)', marginTop: '80px' }} />
-          <ProcessStep
-            number="3"
-            icon={Sparkles}
-            title="Drive Away Spotless"
-            desc="In 45 to 90 minutes your car is done. We notify you when it is ready. Walk out, inspect it, and drive away in a car that looks and smells brand new."
-          />
-        </div>
-        <div style={{ marginTop: '80px', textAlign: 'center', fontFamily: 'Inter', fontSize: '14px', color: '#6B6B6B', fontWeight: 500 }}>
-          ⭐ Trusted by 2,400+ car owners across the city — average service time 8 minutes to book, 60 minutes to complete.
-        </div>
-      </div>
+      <TheProcess />
 
       {/* F. TESTIMONIALS */}
       <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', padding: '120px 48px' }}>
@@ -472,8 +436,8 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
         cursor: 'pointer',
         opacity: isDimmed ? 0.6 : 1,
         transform: popular ? (isFocused ? 'translateY(-16px) scale(1.02)' : 'translateY(-4px)') : (isFocused ? 'translateY(-8px)' : 'translateY(0)'),
-        boxShadow: popular 
-          ? (isFocused ? '0 40px 80px rgba(200, 169, 110, 0.15)' : '0 16px 48px rgba(0,0,0,0.08)') 
+        boxShadow: popular
+          ? (isFocused ? '0 40px 80px rgba(200, 169, 110, 0.15)' : '0 16px 48px rgba(0,0,0,0.08)')
           : (isFocused ? '0 24px 48px rgba(0,0,0,0.06)' : 'none'),
         display: 'flex',
         flexDirection: 'column',
@@ -482,17 +446,17 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
       }}
     >
       {popular && (
-        <div style={{ 
-          position: 'absolute', 
-          top: '-14px', 
-          left: '50%', 
-          transform: 'translateX(-50%)', 
-          background: '#1A1A1A', 
-          color: '#FFFFFF', 
-          fontSize: '11px', 
-          fontFamily: 'Inter', 
-          fontWeight: 700, 
-          padding: '6px 16px', 
+        <div style={{
+          position: 'absolute',
+          top: '-14px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#1A1A1A',
+          color: '#FFFFFF',
+          fontSize: '11px',
+          fontFamily: 'Inter',
+          fontWeight: 700,
+          padding: '6px 16px',
           borderRadius: '100px',
           letterSpacing: '0.05em',
           textTransform: 'uppercase'
@@ -500,11 +464,11 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
           Most Popular
         </div>
       )}
-      
+
       <div style={{ marginBottom: '20px' }}>
         <Icon size={36} color="#C8A96E" strokeWidth={1.5} />
       </div>
-      
+
       <div style={{ marginBottom: '24px' }}>
         <h3 style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '22px', color: '#1A1A1A', marginBottom: '4px', lineHeight: 1.2 }}>
           {title}
@@ -530,10 +494,10 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
       <div style={{ flex: 1, marginBottom: '32px' }}>
         {features.map((feat, i) => (
           <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '14px', alignItems: 'flex-start' }}>
-            <span style={{ 
-              color: '#C8A96E', 
-              fontSize: '12px', 
-              flexShrink: 0, 
+            <span style={{
+              color: '#C8A96E',
+              fontSize: '12px',
+              flexShrink: 0,
               marginTop: '2px',
               display: 'flex',
               alignItems: 'center',
@@ -573,55 +537,7 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
   );
 }
 
-function ProcessStep({ number, icon: Icon, title, desc }: { number: string, icon: React.ElementType, title: string, desc: string }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', flex: 1 }}>
-      <div style={{ position: 'relative', marginBottom: '24px' }}>
-        <div style={{ 
-          width: '24px', 
-          height: '24px', 
-          backgroundColor: '#1A1A1A', 
-          color: '#FFFFFF', 
-          borderRadius: '50%', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          fontSize: '11px', 
-          fontFamily: 'Inter', 
-          fontWeight: 700,
-          position: 'absolute',
-          top: '-12px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 2
-        }}>
-          {number}
-        </div>
-        <div style={{ 
-          width: '64px', 
-          height: '64px', 
-          backgroundColor: '#FFFFFF', 
-          borderRadius: '20px', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-          position: 'relative',
-          zIndex: 1
-        }}>
-          <Icon size={28} color="#C8A96E" strokeWidth={1.5} />
-        </div>
-      </div>
-      <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '19px', color: '#1A1A1A', marginBottom: '8px' }}>
-        {title}
-      </div>
-      <div style={{ width: '24px', height: '2px', backgroundColor: '#C8A96E', margin: '8px auto 16px' }} />
-      <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: '#6B6B6B', maxWidth: '240px', lineHeight: '1.6', margin: '0 auto' }}>
-        {desc}
-      </div>
-    </div>
-  );
-}
+
 
 function ReviewCard({ quote, name, city }: { quote: string, name: string, city: string }) {
   return (
