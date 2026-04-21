@@ -20,9 +20,9 @@ function Step({ number, icon: Icon, title, desc, index, isVisible }: StepProps) 
       flexDirection: 'column',
       alignItems: 'flex-start',
       textAlign: 'left',
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
-      transition: `opacity 700ms ease ${index * 150}ms, transform 700ms ease ${index * 150}ms`,
+      opacity: 1,
+      transform: 'translateY(0)',
+      transition: 'none',
     }}>
       <div style={{
         fontFamily: 'Inter',
@@ -67,24 +67,8 @@ function Step({ number, icon: Icon, title, desc, index, isVisible }: StepProps) 
 }
 
 export default function TheProcess() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
+    // Reveal everything immediately
   }, []);
 
   const steps = [
@@ -110,7 +94,6 @@ export default function TheProcess() {
 
   return (
     <section 
-      ref={sectionRef}
       id="process" 
       style={{ 
         position: 'relative', 
@@ -168,7 +151,7 @@ export default function TheProcess() {
           <div style={{
             height: '100%',
             background: 'linear-gradient(to right, #C8A96E, rgba(200,169,110,0.3))',
-            width: isVisible ? '100%' : '0%',
+            width: '100%',
             transition: 'width 1800ms ease-out'
           }} />
         </div>
@@ -178,7 +161,7 @@ export default function TheProcess() {
             <Step 
               {...step} 
               index={i} 
-              isVisible={isVisible} 
+              isVisible={true} 
             />
           </div>
         ))}

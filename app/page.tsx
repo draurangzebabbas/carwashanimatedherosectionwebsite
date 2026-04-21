@@ -15,24 +15,32 @@ if (typeof window !== 'undefined') {
 
 export default function Page() {
   useEffect(() => {
+    // Refresh ScrollTrigger after a short delay to account for CarWashScroll initialization
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
+
     // Premium reveal animations for sections
     const sections = document.querySelectorAll('.reveal-section');
     sections.forEach((section) => {
-      gsap.fromTo(section, 
-        { opacity: 0, y: 50 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1, 
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-          }
+      // Set initial state via CSS-in-JS style to prevent flash of content
+      (section as HTMLElement).style.opacity = '0';
+      (section as HTMLElement).style.transform = 'translateY(30px)';
+
+      gsap.to(section, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1.2, 
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 92%',
+          toggleActions: 'play none none none'
         }
-      );
+      });
     });
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -96,6 +104,7 @@ export default function Page() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: '#E0DEDD',
           /* SCROLLING BACKGROUND: Moves with the page like a real door */
           background: `
             linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 30%, rgba(0,0,0,0.1) 100%),
@@ -221,7 +230,7 @@ export default function Page() {
         </div>
 
         {/* D. THE PROCESS */}
-        <div className="reveal-section" style={{ margin: 0, padding: 0, backgroundColor: '#E0DEDD' }}>
+        <div style={{ margin: 0, padding: 0, backgroundColor: '#E0DEDD' }}>
           <TheProcess />
         </div>
 
