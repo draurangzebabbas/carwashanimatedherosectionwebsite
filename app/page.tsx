@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, RefreshCw, Crown } from 'lucide-react';
+import { Sparkles, RefreshCw, Crown, Smartphone, Truck } from 'lucide-react';
 import CarWashScroll from '../components/CarWashScroll';
 
 export default function Page() {
@@ -210,36 +210,42 @@ export default function Page() {
       </div>
 
       {/* E. HOW IT WORKS (THE PROCESS) */}
-      <div id="process" style={{ position: 'relative', zIndex: 20, backgroundColor: '#FFFFFF', padding: '120px 48px' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '72px' }}>
+      <div id="process" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '120px 48px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', marginBottom: '80px' }}>
           <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
             THE PROCESS
           </div>
-          <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A' }}>
-            Simple as 1, 2, 3
+          <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A', marginBottom: '16px' }}>
+            From Your Phone to Your Driveway
+          </div>
+          <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '18px', color: '#6B6B6B', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
+            In three steps, your car goes from dirty to showroom clean — without you going anywhere.
           </div>
         </div>
-        <div className="process-stack" style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', justifyContent: 'space-between' }}>
+        <div className="process-stack" style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', justifyContent: 'space-between', gap: '20px' }}>
           <ProcessStep
-            number="01"
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="5" width="22" height="20" rx="3" stroke="#C8A96E" strokeWidth="2" /><path d="M3 11h22" stroke="#C8A96E" strokeWidth="2" /><path d="M9 3v4M19 3v4" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round" /></svg>}
-            title="Book Online"
-            desc="Choose your service, pick a date and time that works for you"
+            number="1"
+            icon={Smartphone}
+            title="Book in 60 Seconds"
+            desc="Pick your package, drop your address, choose a time slot. Morning, afternoon, or weekend — we work around you. No phone calls. No waiting."
           />
-          <div className="process-connector" style={{ flex: '0 0 80px', borderTop: '2px dashed rgba(0,0,0,0.1)', marginTop: '40px' }} />
+          <div className="process-connector" style={{ flex: '1', borderTop: '2px dotted rgba(0,0,0,0.15)', marginTop: '80px' }} />
           <ProcessStep
-            number="02"
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3a8 8 0 018 8c0 6-8 14-8 14S6 17 6 11a8 8 0 018-8z" stroke="#C8A96E" strokeWidth="2" /><circle cx="14" cy="11" r="3" stroke="#C8A96E" strokeWidth="2" /></svg>}
-            title="We Come to You"
-            desc="Our team arrives at your location fully equipped and ready"
+            number="2"
+            icon={Truck}
+            title="We Arrive Fully Equipped"
+            desc="Our team shows up with everything — water, power, premium products, and professional equipment. You do not need to provide anything. Just hand us the keys and go about your day."
           />
-          <div className="process-connector" style={{ flex: '0 0 80px', borderTop: '2px dashed rgba(0,0,0,0.1)', marginTop: '40px' }} />
+          <div className="process-connector" style={{ flex: '1', borderTop: '2px dotted rgba(0,0,0,0.15)', marginTop: '80px' }} />
           <ProcessStep
-            number="03"
-            icon={<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3v22M3 14h22M7 7l14 14M21 7L7 21" stroke="#C8A96E" strokeWidth="2" strokeLinecap="round" /></svg>}
-            title="Drive Away Shining"
-            desc="Sit back, relax, and enjoy your freshly detailed car"
+            number="3"
+            icon={Sparkles}
+            title="Drive Away Spotless"
+            desc="In 45 to 90 minutes your car is done. We notify you when it is ready. Walk out, inspect it, and drive away in a car that looks and smells brand new."
           />
+        </div>
+        <div style={{ marginTop: '80px', textAlign: 'center', fontFamily: 'Inter', fontSize: '14px', color: '#6B6B6B', fontWeight: 500 }}>
+          ⭐ Trusted by 2,400+ car owners across the city — average service time 8 minutes to book, 60 minutes to complete.
         </div>
       </div>
 
@@ -567,19 +573,50 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
   );
 }
 
-function ProcessStep({ number, icon, title, desc }: { number: string, icon: React.ReactNode, title: string, desc: string }) {
+function ProcessStep({ number, icon: Icon, title, desc }: { number: string, icon: React.ElementType, title: string, desc: string }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', flex: 1 }}>
-      <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '80px', color: 'rgba(0,0,0,0.05)', lineHeight: 1, marginBottom: '8px' }}>
-        {number}
+      <div style={{ position: 'relative', marginBottom: '24px' }}>
+        <div style={{ 
+          width: '24px', 
+          height: '24px', 
+          backgroundColor: '#1A1A1A', 
+          color: '#FFFFFF', 
+          borderRadius: '50%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          fontSize: '11px', 
+          fontFamily: 'Inter', 
+          fontWeight: 700,
+          position: 'absolute',
+          top: '-12px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2
+        }}>
+          {number}
+        </div>
+        <div style={{ 
+          width: '64px', 
+          height: '64px', 
+          backgroundColor: '#FFFFFF', 
+          borderRadius: '20px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+          position: 'relative',
+          zIndex: 1
+        }}>
+          <Icon size={28} color="#C8A96E" strokeWidth={1.5} />
+        </div>
       </div>
-      <div style={{ marginBottom: '16px' }}>
-        {icon}
-      </div>
-      <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '18px', color: '#1A1A1A', marginBottom: '10px' }}>
+      <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '19px', color: '#1A1A1A', marginBottom: '8px' }}>
         {title}
       </div>
-      <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: '#6B6B6B', maxWidth: '200px', lineHeight: '1.65', margin: '0 auto' }}>
+      <div style={{ width: '24px', height: '2px', backgroundColor: '#C8A96E', margin: '8px auto 16px' }} />
+      <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: '#6B6B6B', maxWidth: '240px', lineHeight: '1.6', margin: '0 auto' }}>
         {desc}
       </div>
     </div>
