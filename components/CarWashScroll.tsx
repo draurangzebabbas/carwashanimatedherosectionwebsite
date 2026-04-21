@@ -273,7 +273,7 @@ export default function CarWashScroll() {
             }
           `}</style>
           <div style={{ fontFamily: 'Inter', fontSize: '20px', color: '#1A1A1A', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Sparkle <span style={{ color: '#C8A96E' }}>Experience</span>
+            ValeoWash <span style={{ color: '#C8A96E' }}>Experience</span>
           </div>
           <div style={{ fontFamily: 'Inter', fontSize: '13px', color: 'rgba(0,0,0,0.45)', marginTop: '14px', fontWeight: 500, textAlign: 'center' }}>
             Preparing high-fidelity cinematic sequence...<br/>

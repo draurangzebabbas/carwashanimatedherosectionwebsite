@@ -77,7 +77,7 @@ export default function Page() {
           boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#1A1A1A' }}>SPARKLE</span>
+            <span style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#1A1A1A' }}>VALEOWASH</span>
             <span style={{ color: '#C8A96E', fontSize: '8px', marginLeft: '2px' }}>●</span>
           </div>
 
@@ -271,7 +271,7 @@ export default function Page() {
         <div id="footer" style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
           <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '64px', maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }}>
             <div>
-              <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#FFFFFF' }}>SPARKLE.</div>
+              <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#FFFFFF' }}>VALEOWASH.</div>
               <div style={{ marginTop: '16px', fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.35)', maxWidth: '200px', lineHeight: '1.6' }}>
                 Premium car wash services delivered to your door
               </div>
@@ -293,7 +293,7 @@ export default function Page() {
 
             <div>
               <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>CONTACT</div>
-              {['+92 300 1234567', 'hello@sparkle.pk', 'Lahore, Pakistan'].map((text, i) => (
+              {['+92 300 1234567', 'hello@valeowash.pk', 'Lahore, Pakistan'].map((text, i) => (
                 <div key={i} style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.45)', marginBottom: '12px', display: 'block' }}>
                   {text}
                 </div>
@@ -303,7 +303,7 @@ export default function Page() {
 
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.07)', paddingLeft: '48px', paddingRight: '48px', flexWrap: 'wrap', gap: '16px' }}>
             <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '13px', color: 'rgba(255,255,255,0.2)' }}>
-              © 2025 Sparkle. All rights reserved.
+              © 2025 ValeoWash. All rights reserved.
             </div>
             <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '13px', color: 'rgba(255,255,255,0.2)' }}>
               Made with ♥ in Pakistan
