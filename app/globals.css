@@ -12,11 +12,31 @@
   display: none;
 }
 
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 html, body {
   overflow-x: hidden;
   background-color: #E0DEDD;
   font-family: 'Inter', system-ui, sans-serif;
   color: #1A1A1A;
-  scroll-behavior: smooth;
 }
+
 

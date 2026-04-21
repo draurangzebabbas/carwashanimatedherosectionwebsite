@@ -116,7 +116,7 @@ export default function TheProcess() {
         position: 'relative', 
         zIndex: 20, 
         backgroundColor: '#E0DEDD', 
-        padding: '140px 48px',
+        padding: '20px 48px 20px',
         overflow: 'hidden'
       }}
     >
