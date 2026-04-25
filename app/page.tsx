@@ -8,6 +8,7 @@ import SmoothScroll from '../components/SmoothScroll';
 import TestimonialMarquee from '../components/TestimonialMarquee';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { getCalApi } from "@calcom/embed-react";
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +42,13 @@ export default function Page() {
     });
 
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({"namespace":"thedailydriver"});
+      cal("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#B8975D"},"dark":{"cal-brand":"#B8975D"}},"hideEventTypeDetails":false,"layout":"month_view"});
+    })();
   }, []);
 
   return (
@@ -92,7 +100,25 @@ export default function Page() {
             ))}
           </div>
 
-          <HoverButton text="Book Now" primary={true} />
+          <button 
+            onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              background: '#1A1A1A',
+              color: '#FFFFFF',
+              border: 'none',
+              padding: '10px 28px',
+              borderRadius: '100px',
+              fontFamily: 'Inter',
+              fontWeight: 600,
+              fontSize: '14px',
+              cursor: 'pointer',
+              transition: 'background 200ms ease'
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#C8A96E')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1A1A1A')}
+          >
+            Book Now
+          </button>
         </nav>
 
         {/* B. HERO SECTION INTRO */}
@@ -264,7 +290,26 @@ export default function Page() {
           <div style={{ marginTop: '16px', marginBottom: '44px', fontFamily: 'Inter', fontWeight: 400, fontSize: '17px', color: 'rgba(0,0,0,0.55)' }}>
             Book your wash today and drive away shining
           </div>
-          <HoverButton text="Book Now" primary={true} large={true} cta={true} />
+          <button 
+            onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              background: '#1A1A1A',
+              color: '#FFFFFF',
+              border: 'none',
+              padding: '14px 48px',
+              borderRadius: '100px',
+              fontFamily: 'Inter',
+              fontWeight: 600,
+              fontSize: '15px',
+              cursor: 'pointer',
+              marginTop: '44px',
+              transition: 'background 200ms ease'
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.75)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#1A1A1A')}
+          >
+            Choose Your Package
+          </button>
         </div>
 
         {/* H. FOOTER */}
@@ -329,10 +374,11 @@ function PackagesGrid() {
       tagline: "Your car sees everything you do. Keep it clean.",
       price: "$49",
       subPrice: "$59 for SUV/Truck",
-      oneLiner: "Perfect for every 2–3 weeks. In and out in under an hour, at your driveway.",
+      oneLiner: "Exterior refresh: 45m (Sedan) / 60m (SUV). Perfect for every 2–3 weeks.",
       features: ['Premium foam hand wash — exterior', 'Wheel and rim scrub', 'Tyre dressing — jet black finish', 'All windows exterior cleaned', 'Hand dried with microfibre towels', 'Door jambs wiped'],
       buttonText: "Get It Done",
-      popular: false
+      popular: false,
+      calLink: "ahmed-ameen-rwdyc0/thedailydriver"
     },
     {
       icon: RefreshCw,
@@ -340,10 +386,11 @@ function PackagesGrid() {
       tagline: "Start the week feeling like everything is in order.",
       price: "$99",
       subPrice: "$119 for SUV/Truck",
-      oneLiner: "Inside and out. The wash that actually makes your car feel new again.",
+      oneLiner: "Deep Clean: 90m (Sedan) / 120m (SUV). The wash that makes your car feel new.",
       features: ['Everything in The Daily Driver', 'Full interior vacuum including boot and under seats', 'Dashboard, console, vents, and door panels detailed', 'Cup holders deep cleaned', 'Interior windows cleaned streak-free', 'Leather or fabric seats wiped and conditioned', 'Premium car scent applied', 'Tyre shine'],
       buttonText: "Book My Reset",
-      popular: true
+      popular: true,
+      calLink: "ahmed-ameen-rwdyc0/the-sunday-reset"
     },
     {
       icon: Crown,
@@ -351,12 +398,21 @@ function PackagesGrid() {
       tagline: "For when your car deserves to be treated like it just left the showroom.",
       price: "$199",
       subPrice: "$249 for SUV/Truck",
-      oneLiner: "The full restoration. Recommended every 3 months or before selling your car.",
+      oneLiner: "Showroom Detail: 4h (Sedan) / 6h (SUV). The full high-end restoration.",
       features: ['Everything in The Sunday Reset', 'Clay bar treatment — removes all bonded contamination from paint', 'Machine orbital polish — removes light scratches and swirl marks', 'Hand applied carnauba wax — protection for 3 months', 'Engine bay detail and clean', 'Headlight polish and restoration', 'Full interior shampoo — carpets and seats', 'Odour elimination treatment', 'Tyre and rim deep restore'],
       buttonText: "Book White Glove",
-      popular: false
+      popular: false,
+      calLink: "ahmed-ameen-rwdyc0/the-white-glove"
     }
   ];
+
+  const handleBooking = async (calLink: string) => {
+    const cal = await getCalApi({"namespace":"thedailydriver"});
+    cal("modal", {
+      calLink: calLink,
+      config: {"layout":"month_view"}
+    });
+  };
 
   return (
     <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
@@ -368,6 +424,7 @@ function PackagesGrid() {
           isDimmed={hoveredIndex !== null && hoveredIndex !== i}
           onHover={() => setHoveredIndex(i)}
           onLeave={() => setHoveredIndex(null)}
+          onClick={() => handleBooking(pkg.calLink)}
         />
       ))}
     </div>
@@ -436,11 +493,12 @@ function StatBox({ number, label }: { number: string, label: string }) {
   );
 }
 
-function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, features, buttonText, popular, isFocused, isDimmed, onHover, onLeave }: { icon: React.ElementType, title: string, tagline: string, price: string, subPrice: string, oneLiner: string, features: string[], buttonText: string, popular: boolean, isFocused: boolean, isDimmed: boolean, onHover: () => void, onLeave: () => void }) {
+function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, features, buttonText, popular, isFocused, isDimmed, onHover, onLeave, onClick }: { icon: React.ElementType, title: string, tagline: string, price: string, subPrice: string, oneLiner: string, features: string[], buttonText: string, popular: boolean, isFocused: boolean, isDimmed: boolean, onHover: () => void, onLeave: () => void, onClick: () => void }) {
   return (
     <div
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
+      onClick={onClick}
       style={{
         background: '#FFFFFF',
         border: popular ? (isFocused ? '2px solid #C8A96E' : '2px solid #1A1A1A') : '1px solid rgba(0,0,0,0.07)',

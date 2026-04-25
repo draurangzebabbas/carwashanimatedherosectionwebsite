@@ -30,6 +30,9 @@ export default function CarWashScroll() {
   const [canvasReady, setCanvasReady] = useState(false);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const isActiveRef = useRef(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const soundEnabledRef = useRef(false);
   const loadedIndicesRef = useRef<Set<number>>(new Set());
 
   const MIN_FRAMES_TO_START = 30;
@@ -74,27 +77,7 @@ export default function CarWashScroll() {
     drawFrame(frameIndexRef.current);
   };
 
-  // PART 4 — SCROLL PROGRESS CALCULATION
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
-    const vh = window.innerHeight;
 
-    // PART 4.1: ANIMATION TIMING
-    const startOffset = vh; 
-    const relativeScroll = Math.max(scrollY - startOffset, 0);
-    
-    // Smooth linear mapping over a long range (5.5 VH)
-    const animationScrollRange = vh * 5.5;
-    const progress = Math.min(relativeScroll / animationScrollRange, 1);
-    
-    let frameIndex = Math.floor(progress * (TOTAL_FRAMES - 1));
-    frameIndex = Math.min(Math.max(frameIndex, 0), TOTAL_FRAMES - 1);
-
-    if (frameIndex !== frameIndexRef.current) {
-      frameIndexRef.current = frameIndex;
-      needsDrawRef.current = true;
-    }
-  };
 
   // Preload images
   useEffect(() => {
@@ -177,6 +160,51 @@ export default function CarWashScroll() {
     return () => clearTimeout(timeoutId);
   }, []);
 
+  const shutterAudioRef = useRef<HTMLAudioElement | null>(null);
+  const washAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  
+  // Smoothing refs for audio
+  const smoothWashTimeRef = useRef(0);
+  const smoothShutterTimeRef = useRef(2);
+  const smoothVolRef = useRef(0);
+
+  // Keep refs in sync for the render loop
+  useEffect(() => {
+    isActiveRef.current = isActive;
+  }, [isActive]);
+
+  useEffect(() => {
+    soundEnabledRef.current = soundEnabled;
+  }, [soundEnabled]);
+
+  // Audio Initialization
+  useEffect(() => {
+    const shutter = new Audio('/Audio/old-garage-door-opening-audio.mp3');
+    shutter.volume = 0;
+    shutter.preload = 'auto';
+    shutterAudioRef.current = shutter;
+
+    const wash = new Audio('/Audio/Car%20wash%20audio.mp3');
+    wash.volume = 0;
+    wash.preload = 'auto';
+    washAudioRef.current = wash;
+
+    const handleFirstInteraction = () => {
+      setHasInteracted(true);
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('scroll', handleFirstInteraction);
+    };
+    window.addEventListener('click', handleFirstInteraction);
+    window.addEventListener('scroll', handleFirstInteraction);
+
+    return () => {
+      shutter.pause();
+      wash.pause();
+      shutterAudioRef.current = null;
+      washAudioRef.current = null;
+    };
+  }, []);
 
   // Listeners and Draw loop
   useEffect(() => {
@@ -185,23 +213,18 @@ export default function CarWashScroll() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Create a proxy for GSAP to animate
-    const scrollProgress = { frame: 0 };
-    
-    // GSAP ScrollTrigger replaces the manual handleScroll
     const st = ScrollTrigger.create({
       trigger: containerRef.current,
-      start: "top bottom", // Start when the section is just below the fold
-      end: "bottom top",    // End when the section is completely above the fold
+      start: "top bottom",
+      end: "bottom top",
       scrub: true,
       onUpdate: (self) => {
-        // DELAYED START: Hold frame 0 (dirty look) during the first 15% of the scroll (shutter reveal)
-        // This ensures the user sees the dirty car as the shutter opens before the wash starts.
-        let frameIndex = 0;
         const revealThreshold = 0.15;
+        let frameIndex = 0;
         
-        if (self.progress > revealThreshold) {
-          // Re-map the remaining 85% of scroll to the full 240 frames
+        if (self.progress <= revealThreshold) {
+          frameIndex = 0;
+        } else {
           const adjustedProgress = (self.progress - revealThreshold) / (1 - revealThreshold);
           frameIndex = Math.floor(adjustedProgress * (TOTAL_FRAMES - 1));
         }
@@ -211,23 +234,87 @@ export default function CarWashScroll() {
           needsDrawRef.current = true;
         }
       },
-      // Automatically hide/show canvas when entering/leaving the section
       onToggle: (self) => {
         setIsActive(self.isActive);
+        isActiveRef.current = self.isActive;
+        if (!self.isActive) {
+          shutterAudioRef.current?.pause();
+          washAudioRef.current?.pause();
+        }
       }
     });
 
     let raf: number;
     const render = () => {
-      // Update React state for overlays in sync with animation loop
+      // 1. Update Frames
       if (currentFrame !== frameIndexRef.current) {
         setCurrentFrame(frameIndexRef.current);
       }
-
       if (needsDrawRef.current) {
         drawFrame(frameIndexRef.current);
         needsDrawRef.current = false;
       }
+
+      // 2. Manage Audio In Render Loop for instant stop and smoothness
+      if (allLoaded && soundEnabledRef.current) {
+        const revealThreshold = 0.15;
+        const velocity = Math.abs(st.getVelocity());
+        const progress = st.progress;
+
+        const shutter = shutterAudioRef.current;
+        const wash = washAudioRef.current;
+        const currentIdx = frameIndexRef.current;
+
+        if (velocity > 5 && isActiveRef.current && currentIdx < 165) {
+          if (progress <= revealThreshold) {
+            // SHUTTER PHASE
+            if (wash) wash.pause();
+            if (shutter) {
+              const p = progress / revealThreshold;
+              const targetTime = 2 + (p * 1.95);
+              
+              const drift = Math.abs(shutter.currentTime - targetTime);
+              if (drift > 0.12) {
+                shutter.muted = true; // Kill beeps during seek
+                shutter.currentTime = targetTime;
+                shutter.muted = false;
+              }
+
+              shutter.volume = Math.min(Math.max(velocity / 400, 0.4), 1.0);
+              if (shutter.paused) shutter.play().catch(() => {});
+            }
+          } else {
+            // WASH PHASE
+            if (shutter) shutter.pause();
+            if (wash) {
+              const washP = (progress - revealThreshold) / (1 - revealThreshold);
+              const targetTime = washP * 5.95;
+
+              const drift = Math.abs(wash.currentTime - targetTime);
+              if (drift > 0.12) {
+                wash.muted = true; // Kill beeps during seek
+                wash.currentTime = targetTime;
+                wash.muted = false;
+              }
+
+              wash.volume = Math.min(Math.max(velocity / 600, 0.4), 0.95);
+              if (wash.paused) wash.play().catch(() => {});
+            }
+          }
+        } else {
+          // INSTANT STOP
+          if (shutter && !shutter.paused) {
+            shutter.pause();
+            shutter.volume = 0;
+          }
+          if (wash && !wash.paused) {
+            wash.pause();
+            wash.volume = 0;
+          }
+          smoothVolRef.current = 0;
+        }
+      }
+
       raf = requestAnimationFrame(render);
     };
     raf = requestAnimationFrame(render);
@@ -237,7 +324,7 @@ export default function CarWashScroll() {
       st.kill();
       cancelAnimationFrame(raf);
     };
-  }, [allLoaded]);
+  }, [allLoaded, soundEnabled]);
 
 
 
@@ -246,6 +333,73 @@ export default function CarWashScroll() {
 
   return (
     <>
+      {/* Floating Sound Toggle */}
+      {allLoaded && (
+        <div style={{
+          position: 'fixed',
+          bottom: '30px',
+          right: '30px',
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          {!soundEnabled && !hasInteracted && (
+            <div style={{
+              background: 'rgba(0,0,0,0.8)',
+              color: 'white',
+              padding: '8px 16px',
+              borderRadius: '12px',
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: 'Inter',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              pointerEvents: 'none',
+              animation: 'pulse 2s infinite'
+            }}>
+              CLICK TO ENABLE AUDIO
+            </div>
+          )}
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%',
+              background: soundEnabled ? '#C8A96E' : '#1A1A1A',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+              transition: 'all 300ms ease',
+              transform: soundEnabled ? 'scale(1.1)' : 'scale(1)'
+            }}
+          >
+            {soundEnabled ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            )}
+          </button>
+          <style>{`
+            @keyframes pulse {
+              0% { opacity: 0.6; transform: translateX(0); }
+              50% { opacity: 1; transform: translateX(-5px); }
+              100% { opacity: 0.6; transform: translateX(0); }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* PART 9 — LOADING SCREEN (Pre-start) */}
       {!allLoaded && (
         <div style={{
