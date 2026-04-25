@@ -62,6 +62,8 @@ export default function Page() {
             .hero-title { font-size: 2.8rem !important; line-height: 1.1 !important; }
             .hero-text { font-size: 0.95rem !important; padding: 0 20px !important; }
             .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+            .about-content { padding-top: 0 !important; }
+            .about-grid h2 { font-size: 2rem !important; line-height: 1.2 !important; }
             .stats-grid { 
               display: grid !important;
               grid-template-columns: 1fr 1fr !important; 
@@ -261,7 +263,7 @@ export default function Page() {
 
         {/* D. ABOUT US SECTION */}
         <section id="about" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '160px 48px 80px' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'flex-start' }}>
+          <div className="about-grid" style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'flex-start' }}>
             <div>
               <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
                 ABOUT VALEOWASH
@@ -272,7 +274,7 @@ export default function Page() {
                 Doorstep.
               </h2>
             </div>
-            <div style={{ paddingTop: '40px' }}>
+            <div className="about-content" style={{ paddingTop: '40px' }}>
               <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '1.15rem', color: '#444', lineHeight: 1.7, marginBottom: '32px' }}>
                 We believe your car is more than just a mode of transport—it's an investment and a reflection of your standards. Valeowash was built to provide high-end automotive care without the inconvenience of a traditional shop.
               </p>
