@@ -68,7 +68,7 @@ const Row = ({ items, direction = 'left' }: { items: typeof testimonials, direct
             key={idx}
             style={{
               flexShrink: 0,
-              width: '400px',
+              width: 'clamp(300px, 85vw, 400px)',
               padding: '30px',
               background: 'rgba(255, 255, 255, 0.04)',
               border: '1px solid rgba(255, 255, 255, 0.07)',

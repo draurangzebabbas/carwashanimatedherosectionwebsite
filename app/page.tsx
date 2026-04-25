@@ -28,10 +28,10 @@ export default function Page() {
       (section as HTMLElement).style.opacity = '0';
       (section as HTMLElement).style.transform = 'translateY(30px)';
 
-      gsap.to(section, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 1.2, 
+      gsap.to(section, {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: section,
@@ -46,8 +46,8 @@ export default function Page() {
 
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({"namespace":"thedailydriver"});
-      cal("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#B8975D"},"dark":{"cal-brand":"#B8975D"}},"hideEventTypeDetails":false,"layout":"month_view"});
+      const cal = await getCalApi({ "namespace": "thedailydriver" });
+      cal("ui", { "cssVarsPerTheme": { "light": { "cal-brand": "#B8975D" }, "dark": { "cal-brand": "#B8975D" } }, "hideEventTypeDetails": false, "layout": "month_view" });
     })();
   }, []);
 
@@ -61,6 +61,7 @@ export default function Page() {
             .nav-logo { font-size: 18px !important; }
             .hero-title { font-size: 2.8rem !important; line-height: 1.1 !important; }
             .hero-text { font-size: 0.95rem !important; padding: 0 20px !important; }
+            .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
             .stats-grid { 
               display: grid !important;
               grid-template-columns: 1fr 1fr !important; 
@@ -76,6 +77,7 @@ export default function Page() {
             .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; padding: 0 24px !important; }
             .footer-bottom { padding: 24px 20px !important; text-align: center; }
             .reveal-section { padding-left: 20px !important; padding-right: 20px !important; }
+            #about { padding-top: 80px !important; padding-bottom: 60px !important; }
             .section-heading { font-size: 1.8rem !important; }
             .section-subtext { font-size: 16px !important; }
           }
@@ -106,16 +108,16 @@ export default function Page() {
 
           <div className="nav-links" style={{ display: 'flex', gap: '36px' }}>
             {[
-              { text: 'Packages', href: '#packages' },
-              { text: 'The Process', href: '#process' },
               { text: 'About us', href: '#about' },
+              { text: 'The Process', href: '#process' },
+              { text: 'Packages', href: '#packages' },
               { text: 'Contact', href: '#footer' }
             ].map(item => (
               <HoverLink key={item.text} text={item.text} href={item.href} />
             ))}
           </div>
 
-          <button 
+          <button
             onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
             style={{
               background: '#1A1A1A',
@@ -257,8 +259,33 @@ export default function Page() {
           <CarWashScroll />
         </div>
 
-        {/* C. STATS BAR (Black Background) */}
-        <div id="about" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#111111', padding: '120px 48px' }}>
+        {/* D. ABOUT US SECTION */}
+        <section id="about" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '160px 48px 80px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'flex-start' }}>
+            <div>
+              <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                ABOUT VALEOWASH
+              </div>
+              <h2 style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', color: '#1A1A1A', lineHeight: 1.1, marginBottom: '24px', letterSpacing: '-0.02em' }}>
+                Precision Detailing <br />
+                Delivered to Your <br />
+                Doorstep.
+              </h2>
+            </div>
+            <div style={{ paddingTop: '40px' }}>
+              <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '1.15rem', color: '#444', lineHeight: 1.7, marginBottom: '32px' }}>
+                We believe your car is more than just a mode of transport—it's an investment and a reflection of your standards. Valeowash was built to provide high-end automotive care without the inconvenience of a traditional shop.
+              </p>
+              <div style={{ width: '40px', height: '2px', backgroundColor: '#C8A96E', marginBottom: '32px' }} />
+              <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '1rem', color: '#6B6B6B', lineHeight: 1.8, opacity: 0.9 }}>
+                Our team uses specialized tools and premium, eco-friendly products to ensure every inch of your vehicle is treated with the utmost respect. From daily refreshes to deep showroom restorations, we bring the excellence to you.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* E. STATS BAR (Black Background) */}
+        <div className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#111111', padding: '100px 48px' }}>
           <div className="stats-grid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap' }}>
             <StatBox number="2,400+" label="Happy Customers" />
             <div className="stats-divider" style={{ width: '1px', height: '44px', background: 'rgba(255,255,255,0.1)' }} />
@@ -305,7 +332,7 @@ export default function Page() {
           <div className="section-subtext" style={{ marginTop: '16px', marginBottom: '44px', fontFamily: 'Inter', fontWeight: 400, fontSize: '17px', color: 'rgba(0,0,0,0.55)' }}>
             Book your wash today and drive away shining
           </div>
-          <button 
+          <button
             onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}
             style={{
               background: '#1A1A1A',
@@ -349,45 +376,45 @@ export default function Page() {
               <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>CONTACT</div>
               <ContactLink icon={Phone} text="+92 304 8881609" href="tel:+923048881609" />
               <ContactLink icon={Mail} text="contact@draurangzebabbas.com" href="mailto:contact@draurangzebabbas.com" />
-              <ContactLink icon={MapPin} text="Lahore, Pakistan" href="https://maps.google.com/?q=Lahore,Pakistan" />
+              <ContactLink icon={MapPin} text="Minchinabad, Pakistan" href="https://maps.app.goo.gl/tuhqcPfTKKSo1C1E6" />
             </div>
           </div>
 
-          <div className="footer-bottom" style={{ 
-            maxWidth: '1200px', 
-            margin: '0 auto', 
-            display: 'flex', 
-            justifyContent: 'center', 
+          <div className="footer-bottom" style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '60px', 
-            paddingTop: '32px', 
-            borderTop: '1px solid rgba(255,255,255,0.07)', 
-            paddingLeft: '48px', 
-            paddingRight: '48px', 
-            flexWrap: 'wrap', 
-            gap: '16px' 
+            marginTop: '60px',
+            paddingTop: '32px',
+            borderTop: '1px solid rgba(255,255,255,0.07)',
+            paddingLeft: '48px',
+            paddingRight: '48px',
+            flexWrap: 'wrap',
+            gap: '16px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img 
-                  src="/Aurangzeb/Aurangzeb%20Black%20T%20shirt%20facing%20front.png" 
-                  alt="Aurangzeb Abbas" 
-                  style={{ 
-                    width: '32px', 
-                    height: '32px', 
-                    borderRadius: '50%', 
+                <img
+                  src="/Aurangzeb/Aurangzeb%20Black%20T%20shirt%20facing%20front.png"
+                  alt="Aurangzeb Abbas"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
                     objectFit: 'cover',
                     border: '1px solid rgba(200, 169, 110, 0.3)'
-                  }} 
+                  }}
                 />
-                <a 
-                  href="https://draurangzebabbas.com" 
-                  target="_blank" 
+                <a
+                  href="https://draurangzebabbas.com"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  style={{ 
-                    fontFamily: 'Inter', 
-                    fontWeight: 500, 
-                    fontSize: '14px', 
+                  style={{
+                    fontFamily: 'Inter',
+                    fontWeight: 500,
+                    fontSize: '14px',
                     color: 'rgba(255,255,255,0.6)',
                     textDecoration: 'none',
                     transition: 'color 200ms ease'
@@ -399,11 +426,11 @@ export default function Page() {
                 </a>
               </div>
               <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.1)' }} />
-              <a 
-                href="https://x.com/draurangzebabas" 
-                target="_blank" 
+              <a
+                href="https://x.com/draurangzebabas"
+                target="_blank"
                 rel="noopener noreferrer"
-                style={{ 
+                style={{
                   display: 'flex',
                   alignItems: 'center',
                   color: 'rgba(255,255,255,0.6)',
@@ -469,10 +496,10 @@ function PackagesGrid() {
   ];
 
   const handleBooking = async (calLink: string) => {
-    const cal = await getCalApi({"namespace":"thedailydriver"});
+    const cal = await getCalApi({ "namespace": "thedailydriver" });
     cal("modal", {
       calLink: calLink,
-      config: {"layout":"month_view"}
+      config: { "layout": "month_view" }
     });
   };
 

@@ -415,10 +415,11 @@ export default function CarWashScroll() {
                 width: 90% !important;
                 padding: 24px 20px !important;
               }
-              .overlay-title { font-size: 1.5rem !important; }
+              .overlay-title { font-size: 1.4rem !important; }
               .overlay-desc { font-size: 13px !important; white-space: normal !important; }
               .overlay-price { font-size: 1.6rem !important; margin-bottom: 16px !important; }
               .overlay-btn { padding: 12px 32px !important; font-size: 14px !important; }
+              .scroll-overlay-center { width: auto !important; min-width: 280px !important; }
             }
           `}</style>
         </div>
