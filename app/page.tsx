@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Sparkles, RefreshCw, Crown } from 'lucide-react';
+import { Sparkles, RefreshCw, Crown, Mail, Phone, MapPin } from 'lucide-react';
 import CarWashScroll from '../components/CarWashScroll';
 import TheProcess from '../components/TheProcess'
 import SmoothScroll from '../components/SmoothScroll';
@@ -57,27 +57,42 @@ export default function Page() {
         <style>{`
           @media (max-width: 768px) {
             .nav-links { display: none !important; }
-            .stats-grid { grid-template-columns: 1fr 1fr !important; grid-template-rows: auto !important; }
+            .nav-container { padding: 0 20px !important; }
+            .nav-logo { font-size: 18px !important; }
+            .hero-title { font-size: 2.8rem !important; line-height: 1.1 !important; }
+            .hero-text { font-size: 0.95rem !important; padding: 0 20px !important; }
+            .stats-grid { 
+              display: grid !important;
+              grid-template-columns: 1fr 1fr !important; 
+              gap: 20px !important;
+              padding: 0 20px !important;
+            }
+            .stat-box { padding: 0 10px !important; }
             .stats-divider { display: none !important; }
-            .services-grid { grid-template-columns: 1fr !important; }
+            .services-grid { grid-template-columns: 1fr !important; gap: 32px !important; padding: 0 20px !important; }
             .process-stack { flex-direction: column !important; }
             .process-connector { display: none !important; }
             .reviews-stack { flex-direction: column !important; }
-            .footer-grid { grid-template-columns: 1fr 1fr !important; }
+            .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; padding: 0 24px !important; }
+            .footer-bottom { padding: 24px 20px !important; text-align: center; }
+            .reveal-section { padding-left: 20px !important; padding-right: 20px !important; }
+            .section-heading { font-size: 1.8rem !important; }
+            .section-subtext { font-size: 16px !important; }
           }
           @media (max-width: 480px) {
+            .hero-title { font-size: 2.2rem !important; }
             .stats-grid { grid-template-columns: 1fr !important; }
-            .footer-grid { grid-template-columns: 1fr !important; }
+            .service-card { padding: 32px 24px !important; }
           }
         `}</style>
 
         {/* A. FIXED NAVBAR */}
-        <nav style={{
+        <nav className="nav-container" style={{
           position: 'fixed', top: 0, left: 0, right: 0,
           zIndex: 1000, height: '67px', width: '100%',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 48px',
-          backgroundColor: 'rgba(255, 255, 255, 0.45)',
+          backgroundColor: 'rgba(255, 255, 255, 0.65)',
           backdropFilter: 'blur(20px) saturate(180%)',
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
           borderRadius: '0 0 24px 24px',
@@ -85,8 +100,8 @@ export default function Page() {
           boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#1A1A1A' }}>VALEOWASH</span>
-            <span style={{ color: '#C8A96E', fontSize: '8px', marginLeft: '2px' }}>●</span>
+            <span className="nav-logo" style={{ fontFamily: 'Inter', fontWeight: 800, fontSize: '20px', color: '#1A1A1A', letterSpacing: '-0.02em' }}>VALEOWASH</span>
+            <span style={{ color: '#C8A96E', fontSize: '8px', marginLeft: '4px' }}>●</span>
           </div>
 
           <div className="nav-links" style={{ display: 'flex', gap: '36px' }}>
@@ -198,7 +213,7 @@ export default function Page() {
           }} />
 
           <div style={{ position: 'relative', zIndex: 5 }}>
-            <h1 style={{
+            <h1 className="hero-title" style={{
               fontFamily: 'Inter',
               fontWeight: 900,
               fontSize: 'clamp(3rem, 8vw, 5.5rem)',
@@ -220,7 +235,7 @@ export default function Page() {
               }}>Your Vehicle</span>
             </h1>
 
-            <p style={{
+            <p className="hero-text" style={{
               fontFamily: 'Inter',
               fontSize: '1.05rem',
               marginTop: '32px',
@@ -232,7 +247,7 @@ export default function Page() {
               color: '#444444',
               opacity: 0.8
             }}>
-              Scroll down to experience our interactive wash process from start to finish.
+              Experience the art of detailing. Scroll down to witness our signature transformation.
             </p>
           </div>
         </div>
@@ -243,7 +258,7 @@ export default function Page() {
         </div>
 
         {/* C. STATS BAR (Black Background) */}
-        <div id="about" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#111111', padding: '80px 48px' }}>
+        <div id="about" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#111111', padding: '120px 48px' }}>
           <div className="stats-grid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap' }}>
             <StatBox number="2,400+" label="Happy Customers" />
             <div className="stats-divider" style={{ width: '1px', height: '44px', background: 'rgba(255,255,255,0.1)' }} />
@@ -261,15 +276,15 @@ export default function Page() {
         </div>
 
         {/* E. SERVICES SECTION (PACKAGES) */}
-        <section id="packages" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '20px 48px 80px' }}>
+        <section id="packages" className="reveal-section" style={{ position: 'relative', zIndex: 20, backgroundColor: '#E0DEDD', padding: '100px 48px 120px' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ marginBottom: '14px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
               OUR PACKAGES
             </div>
-            <div style={{ marginBottom: '16px', fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A', lineHeight: '1.2' }}>
+            <div className="section-heading" style={{ marginBottom: '16px', fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A1A', lineHeight: '1.2' }}>
               Your Car. Your Schedule. Your Door.
             </div>
-            <div style={{ marginBottom: '72px', fontFamily: 'Inter', fontWeight: 400, fontSize: '18px', color: '#6B6B6B', maxWidth: '540px', lineHeight: '1.6' }}>
+            <div className="section-subtext" style={{ marginBottom: '72px', fontFamily: 'Inter', fontWeight: 400, fontSize: '18px', color: '#6B6B6B', maxWidth: '540px', lineHeight: '1.6' }}>
               Book in 60 seconds. We show up with everything. You just hand us the keys.
             </div>
 
@@ -284,10 +299,10 @@ export default function Page() {
 
         {/* G. BOOKING CTA BANNER */}
         <div style={{ position: 'relative', zIndex: 20, backgroundColor: '#C8A96E', padding: '100px 48px', textAlign: 'center' }}>
-          <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: '#1A1A1A' }}>
+          <div className="section-heading" style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: '#1A1A1A' }}>
             Ready for a Cleaner Car?
           </div>
-          <div style={{ marginTop: '16px', marginBottom: '44px', fontFamily: 'Inter', fontWeight: 400, fontSize: '17px', color: 'rgba(0,0,0,0.55)' }}>
+          <div className="section-subtext" style={{ marginTop: '16px', marginBottom: '44px', fontFamily: 'Inter', fontWeight: 400, fontSize: '17px', color: 'rgba(0,0,0,0.55)' }}>
             Book your wash today and drive away shining
           </div>
           <button 
@@ -314,7 +329,7 @@ export default function Page() {
 
         {/* H. FOOTER */}
         <div id="footer" style={{ position: 'relative', zIndex: 20, backgroundColor: '#181818', paddingTop: '80px', paddingBottom: '40px' }}>
-          <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '64px', maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }}>
+          <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '64px', maxWidth: '1200px', margin: '0 auto', padding: '0 48px' }}>
             <div>
               <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: '20px', color: '#FFFFFF' }}>VALEOWASH.</div>
               <div style={{ marginTop: '16px', fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.35)', maxWidth: '200px', lineHeight: '1.6' }}>
@@ -323,35 +338,82 @@ export default function Page() {
             </div>
 
             <div>
-              <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>SERVICES</div>
-              {['Basic Wash', 'Premium Wash', 'Full Detail', 'Fleet Washing'].map(link => (
-                <FooterLink key={link} text={link} />
-              ))}
-            </div>
-
-            <div>
-              <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>COMPANY</div>
-              {['About Us', 'How It Works', 'Reviews', 'Contact Us'].map(link => (
-                <FooterLink key={link} text={link} />
-              ))}
+              <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>QUICK LINKS</div>
+              <FooterLink text="Our Packages" href="#packages" />
+              <FooterLink text="How It Works" href="#process" />
+              <FooterLink text="About Us" href="#about" />
+              <FooterLink text="Reviews" href="#reviews" />
             </div>
 
             <div>
               <div style={{ fontFamily: 'Inter', fontWeight: 600, fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '20px' }}>CONTACT</div>
-              {['+92 300 1234567', 'hello@valeowash.pk', 'Lahore, Pakistan'].map((text, i) => (
-                <div key={i} style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.45)', marginBottom: '12px', display: 'block' }}>
-                  {text}
-                </div>
-              ))}
+              <ContactLink icon={Phone} text="+92 304 8881609" href="tel:+923048881609" />
+              <ContactLink icon={Mail} text="contact@draurangzebabbas.com" href="mailto:contact@draurangzebabbas.com" />
+              <ContactLink icon={MapPin} text="Lahore, Pakistan" href="https://maps.google.com/?q=Lahore,Pakistan" />
             </div>
           </div>
 
-          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', marginTop: '60px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.07)', paddingLeft: '48px', paddingRight: '48px', flexWrap: 'wrap', gap: '16px' }}>
-            <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '13px', color: 'rgba(255,255,255,0.2)' }}>
-              © 2025 ValeoWash. All rights reserved.
-            </div>
-            <div style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: '13px', color: 'rgba(255,255,255,0.2)' }}>
-              Made with ♥ in Pakistan
+          <div className="footer-bottom" style={{ 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginTop: '60px', 
+            paddingTop: '32px', 
+            borderTop: '1px solid rgba(255,255,255,0.07)', 
+            paddingLeft: '48px', 
+            paddingRight: '48px', 
+            flexWrap: 'wrap', 
+            gap: '16px' 
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img 
+                  src="/Aurangzeb/Aurangzeb%20Black%20T%20shirt%20facing%20front.png" 
+                  alt="Aurangzeb Abbas" 
+                  style={{ 
+                    width: '32px', 
+                    height: '32px', 
+                    borderRadius: '50%', 
+                    objectFit: 'cover',
+                    border: '1px solid rgba(200, 169, 110, 0.3)'
+                  }} 
+                />
+                <a 
+                  href="https://draurangzebabbas.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    fontFamily: 'Inter', 
+                    fontWeight: 500, 
+                    fontSize: '14px', 
+                    color: 'rgba(255,255,255,0.6)',
+                    textDecoration: 'none',
+                    transition: 'color 200ms ease'
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+                >
+                  Created by <span style={{ fontWeight: 700 }}>Aurangzeb Abbas</span>
+                </a>
+              </div>
+              <div style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.1)' }} />
+              <a 
+                href="https://x.com/draurangzebabas" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'rgba(255,255,255,0.6)',
+                  transition: 'color 200ms ease'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+              >
+                <XIcon size={18} />
+              </a>
             </div>
           </div>
         </div>
@@ -482,7 +544,7 @@ function HoverButton({ text, primary, large, cta }: { text: string, primary: boo
 
 function StatBox({ number, label }: { number: string, label: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 48px', flex: 1 }}>
+    <div className="stat-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 48px', flex: 1 }}>
       <div style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', color: '#C8A96E' }}>
         {number}
       </div>
@@ -496,6 +558,7 @@ function StatBox({ number, label }: { number: string, label: string }) {
 function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, features, buttonText, popular, isFocused, isDimmed, onHover, onLeave, onClick }: { icon: React.ElementType, title: string, tagline: string, price: string, subPrice: string, oneLiner: string, features: string[], buttonText: string, popular: boolean, isFocused: boolean, isDimmed: boolean, onHover: () => void, onLeave: () => void, onClick: () => void }) {
   return (
     <div
+      className="service-card"
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       onClick={onClick}
@@ -610,11 +673,11 @@ function ServiceCard({ icon: Icon, title, tagline, price, subPrice, oneLiner, fe
   );
 }
 
-function FooterLink({ text }: { text: string }) {
+function FooterLink({ text, href }: { text: string, href: string }) {
   const [hover, setHover] = useState(false);
   return (
     <a
-      href="#"
+      href={href}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -628,5 +691,41 @@ function FooterLink({ text }: { text: string }) {
     >
       {text}
     </a>
+  );
+}
+
+function ContactLink({ icon: Icon, text, href }: { icon: any, text: string, href: string }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <a
+      href={href}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        fontFamily: 'Inter',
+        fontWeight: 400,
+        fontSize: '14px',
+        color: hover ? '#FFFFFF' : 'rgba(255,255,255,0.45)',
+        textDecoration: 'none',
+        transition: 'color 200ms ease',
+        marginBottom: '12px'
+      }}
+    >
+      <Icon size={16} strokeWidth={1.5} color={hover ? '#C8A96E' : 'rgba(255,255,255,0.3)'} style={{ transition: 'color 200ms ease' }} />
+      {text}
+    </a>
+  );
+}
+
+function XIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
   );
 }

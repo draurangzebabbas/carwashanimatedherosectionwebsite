@@ -396,6 +396,30 @@ export default function CarWashScroll() {
               50% { opacity: 1; transform: translateX(-5px); }
               100% { opacity: 0.6; transform: translateX(0); }
             }
+            @media (max-width: 768px) {
+              .scroll-overlay { 
+                left: 5% !important; 
+                right: 5% !important; 
+                bottom: 10% !important; 
+                max-width: 90% !important; 
+                padding: 20px !important;
+                text-align: center !important;
+              }
+              .scroll-overlay-right {
+                right: 5% !important;
+                left: 5% !important;
+                text-align: center !important;
+                max-width: 90% !important;
+              }
+              .scroll-overlay-center {
+                width: 90% !important;
+                padding: 24px 20px !important;
+              }
+              .overlay-title { font-size: 1.5rem !important; }
+              .overlay-desc { font-size: 13px !important; white-space: normal !important; }
+              .overlay-price { font-size: 1.6rem !important; margin-bottom: 16px !important; }
+              .overlay-btn { padding: 12px 32px !important; font-size: 14px !important; }
+            }
           `}</style>
         </div>
       )}
@@ -479,7 +503,7 @@ export default function CarWashScroll() {
         {/* PART 6 — TEXT OVERLAYS */}
         
         {/* Overlay 1 — Dirty Car — Frames 15 to 65 */}
-        <div style={{
+        <div className="scroll-overlay" style={{
           position: 'fixed',
           bottom: '12%',
           left: '6%',
@@ -498,10 +522,10 @@ export default function CarWashScroll() {
           border: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
+          <div className="overlay-title" style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
             Your Car <span style={{ color: '#C8A96E' }}>Deserves Better</span>
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>
+          <div className="overlay-desc" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500 }}>
             Don't let dirt define your drive. Give your vehicle the treatment it truly earns.
           </div>
         </div>
@@ -509,7 +533,7 @@ export default function CarWashScroll() {
 
 
         {/* Overlay 2 — Being Washed — Frames 110 to 190 */}
-        <div style={{
+        <div className="scroll-overlay scroll-overlay-right" style={{
           position: 'fixed',
           bottom: '12%',
           right: '6%',
@@ -529,10 +553,10 @@ export default function CarWashScroll() {
           border: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
+          <div className="overlay-title" style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 2.5vw, 2.4rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter' }}>
             Professional <span style={{ color: '#C8A96E' }}>Washing</span>
           </div>
-          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500, whiteSpace: 'nowrap' }}>
+          <div className="overlay-desc" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '12px', lineHeight: 1.6, fontFamily: 'Inter', fontWeight: 500, whiteSpace: 'nowrap' }}>
             High pressure wash removes every layer of dirt and grime in minutes.
           </div>
         </div>
@@ -541,7 +565,7 @@ export default function CarWashScroll() {
 
 
         {/* Overlay 3 — Clean Car — Frames 225 to 240 */}
-        <div style={{
+        <div className="scroll-overlay scroll-overlay-center" style={{
           position: 'fixed',
           bottom: '12%',
           left: '50%',
@@ -561,10 +585,10 @@ export default function CarWashScroll() {
           boxShadow: '0 15px 45px rgba(0,0,0,0.2)',
           width: 'max-content'
         }}>
-          <div style={{ color: '#FFFFFF', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', marginBottom: '24px' }}>
+          <div className="overlay-price" style={{ color: '#FFFFFF', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 800, lineHeight: 1.15, fontFamily: 'Inter', marginBottom: '24px' }}>
             Starting from <span style={{ color: '#C8A96E' }}>Rs 500</span>
           </div>
-          <button style={{ 
+          <button className="overlay-btn" style={{ 
             background: '#C8A96E', 
             color: '#181818', 
             border: 'none', 

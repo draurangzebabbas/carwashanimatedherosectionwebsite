@@ -120,7 +120,7 @@ const Row = ({ items, direction = 'left' }: { items: typeof testimonials, direct
 
 export default function TestimonialMarquee() {
   return (
-    <section style={{ 
+    <section id="reviews" style={{ 
       backgroundColor: '#181818', 
       padding: '40px 0 80px', 
       overflow: 'hidden',

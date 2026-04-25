@@ -99,7 +99,7 @@ export default function TheProcess() {
         position: 'relative', 
         zIndex: 20, 
         backgroundColor: '#E0DEDD', 
-        padding: '20px 48px 20px',
+        padding: '100px 48px',
         overflow: 'hidden'
       }}
     >
@@ -116,22 +116,29 @@ export default function TheProcess() {
           position: relative;
         }
         @media (max-width: 768px) {
-          .process-grid { flex-direction: column !important; }
+          .process-grid { 
+            flex-direction: column !important; 
+            gap: 40px !important;
+            padding: 0 10px !important;
+          }
           .process-connector { display: none !important; }
-          .process-step-container { margin-bottom: 48px; }
-          section#process { padding: 80px 24px !important; }
+          .process-step-container { margin-bottom: 20px; }
+          section#process { padding: 60px 24px !important; }
+          .process-header { margin-bottom: 60px !important; }
+          .process-title { font-size: 2rem !important; }
+          .process-desc { font-size: 15px !important; }
         }
       `}</style>
 
       {/* TOP HEADING BLOCK */}
-      <div style={{ maxWidth: '700px', margin: '0 auto 100px', textAlign: 'center' }}>
+      <div className="process-header" style={{ maxWidth: '700px', margin: '0 auto 100px', textAlign: 'center' }}>
         <div style={{ marginBottom: '20px', fontFamily: 'Inter', fontWeight: 500, fontSize: '11px', color: '#C8A96E', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
           THE PROCESS
         </div>
-        <h2 style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', color: '#1A1A1A', lineHeight: 1.1, marginBottom: '20px' }}>
+        <h2 className="process-title" style={{ fontFamily: 'Inter', fontWeight: 700, fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', color: '#1A1A1A', lineHeight: 1.1, marginBottom: '20px' }}>
           From Your Phone to Your Driveway
         </h2>
-        <p style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', color: '#6B6B6B', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
+        <p className="process-desc" style={{ fontFamily: 'Inter', fontWeight: 400, fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', color: '#6B6B6B', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
           In three steps, your car goes from dirty to showroom clean — without you going anywhere.
         </p>
       </div>
